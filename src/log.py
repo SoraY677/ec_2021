@@ -11,12 +11,15 @@ LOG_LEVEL_STR_LIST = ('INFO', 'DEBUG', 'WARN', 'ERROR')
 
 
 class Log:
+    '''
+    ログの管理をするクラス
+    '''
 
     logger = None
 
     def __init__(self, log_level_str=LOG_LEVEL_STR_LIST[0]):
         '''
-        [summary]
+        初期化
 
         Args:
         - log_level_str (str, optional): 指定するログレベルの文字列. Defaults to LOG_LEVEL_STR_LIST[0]('INFO').
