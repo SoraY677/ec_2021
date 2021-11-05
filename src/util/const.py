@@ -7,7 +7,7 @@
 import const
 
 const.FOO = 100			# OK
-const.BAR = 'Hello'	# OK
+const.BAR = 'Hello'    	# OK
 const.FOO = 200  		# NG 
 ```
 
