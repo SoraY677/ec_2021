@@ -31,44 +31,44 @@ logger.setLevel(LOG_LEVEL)
 logger.addHandler(handler)
 
 
-def info(str):
+def info(log_str):
     '''
     ログレベル:info記録
 
     Args:
-    - str (str): 書き込む文字列
+    - log_str (str): 書き込む文字列
     '''
-    logger.info(str)
+    logger.info('INFO:' + log_str)
 
 
-def debug(str):
+def debug(log_str):
     '''
     ログレベル:debug記録
 
     Args:
-    - str (str): 書き込む文字列
+    - log_str (str): 書き込む文字列
     '''
-    logger.debug(str)
+    logger.debug('DEBUG:' + log_str)
 
 
-def warn(str):
-    '''
-    ログレベル:warn記録
-
-    Args:
-    - str (str): 書き込む文字列
-    '''
-    logger.warn(str)
-
-
-def error(str):
+def warn(log_str):
     '''
     ログレベル:warn記録
 
     Args:
-    - str (str): 書き込む文字列
+    - log_str (str): 書き込む文字列
     '''
-    logger.error(str)
+    logger.warn('WARN:' + log_str)
+
+
+def error(log_str):
+    '''
+    ログレベル:warn記録
+
+    Args:
+    - log_str (str): 書き込む文字列
+    '''
+    logger.error('ERROR:' + str(log_str))
 
 
 # example
