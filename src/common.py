@@ -9,6 +9,7 @@ const.SAMPLE_DEFINE = True
 from util import const
 
 # 家族類型
+# 単独世帯 > 女親と子供 > 男親と子供 > その他
 const.FAMILY_TYPE_ID = (
     0,   # 単独世帯
     1,   # 夫婦のみ世帯
@@ -22,6 +23,7 @@ const.FAMILY_TYPE_ID = (
 )
 
 # 世帯内役割
+# 単独世帯(男性)，単独世帯(女性) > その他
 const.ROLE_HOUSEHOLD_TYPE_ID = (
     0,   # 単独世帯 (男性)
     1,   # 単独世帯 (女性)
@@ -34,6 +36,7 @@ const.ROLE_HOUSEHOLD_TYPE_ID = (
 )
 
 # 産業分類
+# 非就業者 > その他
 const.INDUSTRY_TYPE_ID = (
     -1,  	# 非就業者
     10,  	# A 農業，林業
@@ -59,6 +62,7 @@ const.INDUSTRY_TYPE_ID = (
 )
 
 # 雇用形態
+# 非就業者 > 短時間労働者，臨時労働者 > 一般労働者
 const.EMPLOYMENT_TYPE_ID = (
     -1,  # 非就業者
     10,  # 一般労働者
@@ -67,6 +71,7 @@ const.EMPLOYMENT_TYPE_ID = (
 )
 
 # 企業規模
+# 非就業者 > 5〜9人 > 10~99人 > 100~999人 > 1000人以上
 const.COMPANY_SIZE_ID = (
     -1,  	# 非就業者
     5,  	# 5~9人
