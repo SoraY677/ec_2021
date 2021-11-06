@@ -4,92 +4,68 @@
 from logging import getLogger, StreamHandler, handlers
 from logging import INFO, DEBUG, WARN, ERROR
 
-# ログレベルの辞書
-LOG_LEVEL_LIST = {'INFO': INFO, 'DEBUG': DEBUG, 'WARN': WARN, 'ERROR': ERROR}
-# ログレベルの文字列リスト
-LOG_LEVEL_STR_LIST = ('INFO', 'DEBUG', 'WARN', 'ERROR')
+# ログの対象レベル
+# DEBUG, INFO, WARN, ERROR　から選択
+LOG_LEVEL = DEBUG
+
+# ログをファイル出力するか否か
+IS_LOG_OUTPUT = False
+
+# ログの設定
+logger = getLogger(__name__)
+
+if IS_LOG_OUTPUT:
+    handler = \
+        handlers.RotatingFileHandler(
+            r'log.txt',
+            mode='w',
+            encoding='utf-8',
+            maxBytes=100,
+            backupCount=3
+        )
+else:
+    handler = StreamHandler()
+
+handler.setLevel(LOG_LEVEL)
+logger.setLevel(LOG_LEVEL)
+logger.addHandler(handler)
 
 
-class Log:
+def info(str):
     '''
-    ログの管理をするクラス
+    ログレベル:info記録
+
+    Args:
+    - str (str): 書き込む文字列
     '''
-
-    logger = None
-
-    def __init__(self, log_level_str=LOG_LEVEL_STR_LIST[0], isOutFile=False):
-        '''
-        初期化
-
-        Args:
-        - log_level_str (str, optional): 指定するログレベルの文字列/ Defaults:LOG_LEVEL_STR_LIST[0]('INFO').
-        - isOutFile (str, optional): ファイル出力/Default:False
-
-        Raises:
-        - Exception: 指定のログレベルが存在しない場合のエラー
-        '''
-
-        self.logger = getLogger(__name__)
-        try:
-            if log_level_str in LOG_LEVEL_STR_LIST:
-                log_level = LOG_LEVEL_LIST[log_level_str]
-                if isOutFile:
-                    handler = \
-                        handlers.RotatingFileHandler(
-                            r'log.txt',
-                            encoding='utf-8',
-                            maxBytes=100,
-                            backupCount=3
-                        )
-                else:
-                    handler = StreamHandler()
-                    handler.setLevel(log_level)
-
-                self.logger.setLevel(log_level)
-                self.logger.addHandler(handler)
-            else:
-                raise Exception("指定したログレベルが存在しませんでした!")
-        except Exception as e:
-            self.logger.error(e)
-            exit()
-
-    def info(self, str):
-        '''
-        ログレベル:info記録
-
-        Args:
-        - str (str): 書き込む文字列
-        '''
-        self.logger.info(str)
-
-    def debug(self, str):
-        '''
-        ログレベル:debug記録
-
-        Args:
-        - str (str): 書き込む文字列
-        '''
-        self.logger.debug(str)
-
-    def warn(self, str):
-        '''
-        ログレベル:warn記録
-
-        Args:
-        - str (str): 書き込む文字列
-        '''
-        self.logger.warn(str)
-
-    def error(self, str):
-        '''
-        ログレベル:warn記録
-
-        Args:
-        - str (str): 書き込む文字列
-        '''
-        self.logger.error(str)
+    logger.info(str)
 
 
-if __name__ == "__main__":
-    log = Log('DEBUG', True)
-    log.debug("hoge")
+def debug(str):
+    '''
+    ログレベル:debug記録
+
+    Args:
+    - str (str): 書き込む文字列
+    '''
+    logger.debug(str)
+
+
+def warn(str):
+    '''
+    ログレベル:warn記録
+
+    Args:
+    - str (str): 書き込む文字列
+    '''
+    logger.warn(str)
+
+
+def error(str):
+    '''
+    ログレベル:warn記録
+
+    Args:
+    - str (str): 書き込む文字列
+    '''
+    logger.error(str)

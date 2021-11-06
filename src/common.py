@@ -7,6 +7,7 @@ const.SAMPLE_DEFINE = True
 '''
 
 from util import const
+from util import log
 
 # 家族類型
 # 単独世帯 > 女親と子供 > 男親と子供 > その他
@@ -79,3 +80,42 @@ const.COMPANY_SIZE_ID = (
     100,  	# 100~999人
     1000,  	# 1000人以上
 )
+
+#
+
+
+def get_need_context(array, context_id):
+    '''
+    指定の配列(各属性)に対して、制約条件に当てはめて足りていない属性を返す
+
+    Args:
+    - array (list): 検索対象とする属性の配列
+    - context_id (int): 属性種別A1 ~ A5の番号部分 (1 ~ 5)以外の指定はエラー
+        - A1: 家族類型
+        - A2: 世帯内役割
+        - A3: 産業分類 
+        - A4: 雇用形態
+        - A5: 企業規模​
+    '''
+
+    try:
+        if context_id == 1:
+            pass
+        elif context_id == 2:
+            pass
+
+        elif context_id == 3:
+            pass
+        elif context_id == 4:
+            pass
+        elif context_id == 5:
+            pass
+
+        else:
+            raise Exception("指定した種別の番号が1-5になっていない")
+
+    except Exception as e:
+        log.debug(e)
+
+
+get_need_context([], 6)
