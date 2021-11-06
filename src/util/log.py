@@ -1,7 +1,7 @@
 '''
 ログを作成管理スクリプト
 '''
-from logging import getLogger, StreamHandler
+from logging import getLogger, StreamHandler, handlers
 from logging import INFO, DEBUG, WARN, ERROR
 
 # ログレベルの辞書
@@ -17,12 +17,13 @@ class Log:
 
     logger = None
 
-    def __init__(self, log_level_str=LOG_LEVEL_STR_LIST[0]):
+    def __init__(self, log_level_str=LOG_LEVEL_STR_LIST[0], isOutFile=False):
         '''
         初期化
 
         Args:
-        - log_level_str (str, optional): 指定するログレベルの文字列. Defaults to LOG_LEVEL_STR_LIST[0]('INFO').
+        - log_level_str (str, optional): 指定するログレベルの文字列/ Defaults:LOG_LEVEL_STR_LIST[0]('INFO').
+        - isOutFile (str, optional): ファイル出力/Default:False
 
         Raises:
         - Exception: 指定のログレベルが存在しない場合のエラー
@@ -32,8 +33,18 @@ class Log:
         try:
             if log_level_str in LOG_LEVEL_STR_LIST:
                 log_level = LOG_LEVEL_LIST[log_level_str]
-                handler = StreamHandler()
-                handler.setLevel(log_level)
+                if isOutFile:
+                    handler = \
+                        handlers.RotatingFileHandler(
+                            r'log.txt',
+                            encoding='utf-8',
+                            maxBytes=100,
+                            backupCount=3
+                        )
+                else:
+                    handler = StreamHandler()
+                    handler.setLevel(log_level)
+
                 self.logger.setLevel(log_level)
                 self.logger.addHandler(handler)
             else:
@@ -80,5 +91,5 @@ class Log:
 
 
 if __name__ == "__main__":
-    log = Log('DEBU')
+    log = Log('DEBUG', True)
     log.debug("hoge")
