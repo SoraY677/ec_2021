@@ -17,7 +17,7 @@ logger = getLogger(__name__)
 if IS_LOG_OUTPUT:
     handler = \
         handlers.RotatingFileHandler(
-            r'log.txt',
+            r'build.log',
             mode='w',
             encoding='utf-8',
             maxBytes=100,
@@ -69,3 +69,8 @@ def error(str):
     - str (str): 書き込む文字列
     '''
     logger.error(str)
+
+
+# example
+if __name__ == "__main__":
+    info("sample")
