@@ -2,15 +2,15 @@
 定数値を定義するスクリプト
 アッパースネークケースを採用
 
-[ex] 
+[ex]
 const.SAMPLE_DEFINE = True
 '''
 
+from typing import List
 from util import const
 from util import log
 
 # 家族類型
-# 単独世帯 > 女親と子供 > 男親と子供 > その他
 const.FAMILY_TYPE_ID = (
     0,   # 単独世帯
     1,   # 夫婦のみ世帯
@@ -24,7 +24,6 @@ const.FAMILY_TYPE_ID = (
 )
 
 # 世帯内役割
-# 単独世帯(男性)，単独世帯(女性) > その他
 const.ROLE_HOUSEHOLD_TYPE_ID = (
     0,   # 単独世帯 (男性)
     1,   # 単独世帯 (女性)
@@ -37,7 +36,6 @@ const.ROLE_HOUSEHOLD_TYPE_ID = (
 )
 
 # 産業分類
-# 非就業者 > その他
 const.INDUSTRY_TYPE_ID = (
     -1,  	# 非就業者
     10,  	# A 農業，林業
@@ -63,7 +61,6 @@ const.INDUSTRY_TYPE_ID = (
 )
 
 # 雇用形態
-# 非就業者 > 短時間労働者，臨時労働者 > 一般労働者
 const.EMPLOYMENT_TYPE_ID = (
     -1,  # 非就業者
     10,  # 一般労働者
@@ -72,7 +69,6 @@ const.EMPLOYMENT_TYPE_ID = (
 )
 
 # 企業規模
-# 非就業者 > 5〜9人 > 10~99人 > 100~999人 > 1000人以上
 const.COMPANY_SIZE_ID = (
     -1,  	# 非就業者
     5,  	# 5~9人
@@ -81,10 +77,8 @@ const.COMPANY_SIZE_ID = (
     1000,  	# 1000人以上
 )
 
-#
 
-
-def get_need_context(array, context_id):
+def get_need_context(array: list, context_id):
     '''
     指定の配列(各属性)に対して、制約条件に当てはめて足りていない属性を返す
 
@@ -93,29 +87,96 @@ def get_need_context(array, context_id):
     - context_id (int): 属性種別A1 ~ A5の番号部分 (1 ~ 5)以外の指定はエラー
         - A1: 家族類型
         - A2: 世帯内役割
-        - A3: 産業分類 
+        - A3: 産業分類
         - A4: 雇用形態
         - A5: 企業規模​
     '''
-
     try:
+        if type(array) is not list:
+            raise TypeError
+
+        result = []
+
+        # 渡された配列
+        target_array = array
+
+        # 制約条件となる配列
+        # 優先度が x > y    となる場合は (x, y)
+        # 優先度が x, y > z となる場合は ((x, y), z)
+        # という構成
+        constraint_array = ()
+        constraint_array_length = 0
+
         if context_id == 1:
-            pass
+            # 単独世帯 > 女親と子供 > 男親と子供 > その他
+            constraint_array = (0, 4, 3)
+            constraint_array_length = 3
         elif context_id == 2:
-            pass
-
+            # 単独世帯(男性)，単独世帯(女性) > その他
+            constraint_array = ((0, 1), )
+            constraint_array_length = 2
         elif context_id == 3:
-            pass
+            # 非就業者 > その他
+            constraint_array = (-1)
+            constraint_array_length = 1
         elif context_id == 4:
-            pass
+            # 非就業者 > 短時間労働者，臨時労働者 > 一般労働者
+            constraint_array = (-1, (10, 20))
+            constraint_array_length = 3
         elif context_id == 5:
-            pass
-
+            # 非就業者 > 5〜9人 > 10~99人 > 100~999人 > 1000人以上
+            constraint_array = (-1, 5, 10, 100, 1000)
+            constraint_array_length = 5
         else:
-            raise Exception("指定した種別の番号が1-5になっていない")
+            raise Exception
+
+        # 渡された配列のサイズがそもそも0
+        if len(target_array) == 0:
+            result = [constraint_array[0]]
+
+        # 配列に何かしらの要素が入っている
+        else:
+            no_contain_array = []  # 含まれなかった優先度の要素
+            need_contain_array_length = 0  # 不足分として対象にするべき要素の数
+            # チェックループ
+            for constraint_el in constraint_array:
+                print(constraint_el)
+                # 優先度が複数のもの
+                if type(constraint_el) is tuple:
+                    is_either_contain = False  # どちらかが含まれているフラグ
+                    # どちらかが含まれているかチェック
+                    for el in constraint_el:
+                        if el in target_array:
+                            is_either_contain = True
+                            need_contain_array_length = len(no_contain_array)
+                    target_array.remove(el)
+                    # どちらの要素も含まれていない場合は要素不足
+                    if is_either_contain is False:
+                        no_contain_array.append(constraint_el)
+
+                # 優先度が単一のもの
+                else:
+                    if constraint_el not in target_array:
+                        no_contain_array.append(constraint_el)
+                    else:
+                        need_contain_array_length = len(no_contain_array)
+                        target_array.remove(constraint_el)
+
+            # 満たされていない制約条件がある状態で、
+            # まだ調査対象に要素が残っている場合
+            if len(no_contain_array) != 0 and len(target_array) != 0:
+                need_contain_array_length = len(no_contain_array)
+            # 戻り値に清算
+            no_contain_array = tuple(no_contain_array)
+            for i in range(need_contain_array_length):
+                result.append(no_contain_array[i])
 
     except Exception as e:
-        log.debug(e)
+        log.error(e)
+        pass
+
+    return result
 
 
-get_need_context([], 6)
+if __name__ == "__main__":
+    print(get_need_context([0, 4, 500], 2))
