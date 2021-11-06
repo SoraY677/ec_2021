@@ -105,28 +105,22 @@ def get_need_context(array: list, context_id):
         # 優先度が x, y > z となる場合は ((x, y), z)
         # という構成
         constraint_array = ()
-        constraint_array_length = 0
 
         if context_id == 1:
             # 単独世帯 > 女親と子供 > 男親と子供 > その他
             constraint_array = (0, 4, 3)
-            constraint_array_length = 3
         elif context_id == 2:
             # 単独世帯(男性)，単独世帯(女性) > その他
             constraint_array = ((0, 1), )
-            constraint_array_length = 2
         elif context_id == 3:
             # 非就業者 > その他
-            constraint_array = (-1)
-            constraint_array_length = 1
+            constraint_array = (-1,)
         elif context_id == 4:
             # 非就業者 > 短時間労働者，臨時労働者 > 一般労働者
-            constraint_array = (-1, (10, 20))
-            constraint_array_length = 3
+            constraint_array = (-1, (10, 20), 30)
         elif context_id == 5:
             # 非就業者 > 5〜9人 > 10~99人 > 100~999人 > 1000人以上
             constraint_array = (-1, 5, 10, 100, 1000)
-            constraint_array_length = 5
         else:
             raise Exception
 
@@ -136,11 +130,12 @@ def get_need_context(array: list, context_id):
 
         # 配列に何かしらの要素が入っている
         else:
+
             no_contain_array = []  # 含まれなかった優先度の要素
             need_contain_array_length = 0  # 不足分として対象にするべき要素の数
+
             # チェックループ
             for constraint_el in constraint_array:
-                print(constraint_el)
                 # 優先度が複数のもの
                 if type(constraint_el) is tuple:
                     is_either_contain = False  # どちらかが含まれているフラグ
@@ -149,7 +144,6 @@ def get_need_context(array: list, context_id):
                         if el in target_array:
                             is_either_contain = True
                             need_contain_array_length = len(no_contain_array)
-                    target_array.remove(el)
                     # どちらの要素も含まれていない場合は要素不足
                     if is_either_contain is False:
                         no_contain_array.append(constraint_el)
@@ -176,7 +170,3 @@ def get_need_context(array: list, context_id):
         pass
 
     return result
-
-
-if __name__ == "__main__":
-    print(get_need_context([0, 4, 500], 2))
