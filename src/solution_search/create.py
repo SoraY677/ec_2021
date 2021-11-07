@@ -18,6 +18,9 @@ def create_init_sol():
     '''
     result = {}
 
+    # 給付金額を決定
+    result['payment'] = 5 
+
     # 各属性に対してランダムで属性を取得するという処理
     attr_i = 1
     for attr_key in const.ALL_ATTRIBUTE_DICT:
@@ -58,12 +61,12 @@ def hist_2sol(sol_1, sol_2):
     sol_1 (dict): 解1
     sol_2 (dict): 解2
     '''
-
+    
     # DICE係数を用いる
     # https://mieruca-ai.com/ai/jaccard_dice_simpson/
     # *各要素のDICE係数を掛け合わせ総合類似度を計算
 
-    return {}
+    return 1
 
 
 def sol_format():
