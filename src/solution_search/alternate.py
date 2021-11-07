@@ -3,6 +3,8 @@
 人工蜂コロニーアルゴリズム
 '''
 
+def alter():
+    pass
 
 def hist_2sol(sol_1, sol_2):
     '''
@@ -20,5 +22,3 @@ def hist_2sol(sol_1, sol_2):
     return 1
 
 
-def alter():
-    pass
