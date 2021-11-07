@@ -68,9 +68,3 @@ def hist_2sol(sol_1, sol_2):
 
     return 1
 
-
-def sol_format():
-    '''
-    解を提出出来る形に整形する
-    '''
-    pass
