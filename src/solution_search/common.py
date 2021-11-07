@@ -6,9 +6,22 @@
 const.SAMPLE_DEFINE = True
 '''
 
+
+import sys
+from copy import copy
 from typing import List
+
+sys.path.append('../')
 from util import const
 from util import log
+
+const.ATTRIBUTE_NAME_LIST = (
+    'family_type_id',
+    'role_house_type_id',
+    'industry_type_id',
+    'employment_type_id',
+    'company_size_id'
+)
 
 # 家族類型
 const.FAMILY_TYPE_ID = (
@@ -77,8 +90,16 @@ const.COMPANY_SIZE_ID = (
     1000,  	# 1000人以上
 )
 
+const.ALL_ATTRIBUTE_DICT = {
+    'family_type_id': const.FAMILY_TYPE_ID,
+    'role_household_type_id': const.ROLE_HOUSEHOLD_TYPE_ID,
+    'industry_type_id': const.INDUSTRY_TYPE_ID,
+    'employment_type_id': const.EMPLOYMENT_TYPE_ID,
+    'company_size_id': const.COMPANY_SIZE_ID
+}
 
-def get_need_context(array: list, context_id):
+
+def get_need_attr(array: list, attr_id):
     '''
     指定の配列(各属性)に対して、制約条件に当てはめて足りていない属性を返す
 
@@ -98,7 +119,7 @@ def get_need_context(array: list, context_id):
         result = []
 
         # 渡された配列
-        target_array = array
+        target_array = copy(array)
 
         # 制約条件となる配列
         # 優先度が x > y    となる場合は (x, y)
@@ -106,19 +127,19 @@ def get_need_context(array: list, context_id):
         # という構成
         constraint_array = ()
 
-        if context_id == 1:
+        if attr_id == 1:
             # 単独世帯 > 女親と子供 > 男親と子供 > その他
             constraint_array = (0, 4, 3)
-        elif context_id == 2:
+        elif attr_id == 2:
             # 単独世帯(男性)，単独世帯(女性) > その他
             constraint_array = ((0, 1), )
-        elif context_id == 3:
+        elif attr_id == 3:
             # 非就業者 > その他
             constraint_array = (-1,)
-        elif context_id == 4:
+        elif attr_id == 4:
             # 非就業者 > 短時間労働者，臨時労働者 > 一般労働者
             constraint_array = (-1, (10, 20), 30)
-        elif context_id == 5:
+        elif attr_id == 5:
             # 非就業者 > 5〜9人 > 10~99人 > 100~999人 > 1000人以上
             constraint_array = (-1, 5, 10, 100, 1000)
         else:
@@ -144,6 +165,7 @@ def get_need_context(array: list, context_id):
                         if el in target_array:
                             is_either_contain = True
                             need_contain_array_length = len(no_contain_array)
+                            target_array.remove(el)
                     # どちらの要素も含まれていない場合は要素不足
                     if is_either_contain is False:
                         no_contain_array.append(constraint_el)
@@ -170,3 +192,4 @@ def get_need_context(array: list, context_id):
         pass
 
     return result
+
