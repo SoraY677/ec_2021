@@ -38,7 +38,7 @@ def info(log_str):
     Args:
     - log_str (str): 書き込む文字列
     '''
-    logger.info('INFO:' + log_str)
+    logger.info('INFO:' + str(log_str))
 
 
 def debug(log_str):
@@ -48,7 +48,7 @@ def debug(log_str):
     Args:
     - log_str (str): 書き込む文字列
     '''
-    logger.debug('DEBUG:' + log_str)
+    logger.debug('DEBUG:' + str(log_str))
 
 
 def warn(log_str):
@@ -58,7 +58,7 @@ def warn(log_str):
     Args:
     - log_str (str): 書き込む文字列
     '''
-    logger.warn('WARN:' + log_str)
+    logger.warn('WARN:' + str(log_str))
 
 
 def error(log_str):
