@@ -71,7 +71,3 @@ def sol_format():
     解を提出出来る形に整形する
     '''
     pass
-
-
-if __name__ == "__main__":
-    print(create_init_sol())
