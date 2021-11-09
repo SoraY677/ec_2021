@@ -19,7 +19,7 @@ def create_init_sol():
     result = {}
 
     # 給付金額を決定
-    result['payment'] = 5 
+    result[const.PAYMENT_NAME] = 5 
 
     # 各属性に対してランダムで属性を取得するという処理
     attr_i = 1

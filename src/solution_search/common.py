@@ -15,9 +15,11 @@ sys.path.append('../')
 from util import const
 from util import log
 
+const.PAYMENT_NAME = 'payment'
+
 const.ATTRIBUTE_NAME_LIST = (
     'family_type_id',
-    'role_house_type_id',
+    'role_household_type_id',
     'industry_type_id',
     'employment_type_id',
     'company_size_id'

@@ -18,6 +18,7 @@ const.SEARCH_DIRECTION_PLUS = 1 # 探索の際に属性や金額を増やす方�
 const.SEARCH_DIRECTION_MINUS = -1 # 探索の際に属性や金額を増やす方向で動く
 
 sol_poplation = []
+eval_poplation = [0 for _ in range(10)]
 
 def create_sol(create_num = 10):
 	'''
@@ -39,5 +40,20 @@ def create_sol(create_num = 10):
 
 		sol_poplation.append(sol_item)
 	log.debug('======================')
+
+def evaluate_sol(ex_eval_func):
+	'''
+	呼び出し元から受け取った評価関数をもとに、各解を評価
+
+	Args:
+		ex_eval_func (def): 評価関数
+	'''
+	for i in range(len((sol_poplation))):
+		eval_poplation[i] = ex_eval_func(sol_poplation)
+
+def evolve_sol():
+	'''
+	解を変化させる
+	'''
 	
-		
+
