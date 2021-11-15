@@ -26,9 +26,9 @@ def tracking_evolve(prudent_sol, prudent_eval, aggresive_sol,aggresive_eval):
     - aggresive_sol (dict): 積極派の解
     - aggresive_eval (int): 積極派の評価
 
-    Returns:
-    - Boolean:  解が全く違う => True
-                解が似ている => False
+    Returns: Boolean  
+    - 解が全く違う => True
+    - 解が似ている => False
     '''
 
     # 類似度計算
