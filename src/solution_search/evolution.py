@@ -38,6 +38,7 @@ def tracking_evolve(prudent_sol, prudent_eval, aggresive_sol,aggresive_eval):
         hist_ratio *= hist_2array(prudent_sol[key], aggresive_sol[key]) 
     log.debug('類似度:' + str(hist_ratio))
 
+    # 類似度が閾値を超えたら
     if hist_ratio < const.EVOLVE_THRESHOLD:
         return True
 
@@ -46,7 +47,7 @@ def tracking_evolve(prudent_sol, prudent_eval, aggresive_sol,aggresive_eval):
 
 def hist_2num(number_a, number_b):
     '''
-    [summary]
+    二つの値の類似度を算出する
 
     Args:
         number_a (int): 比較元数値
