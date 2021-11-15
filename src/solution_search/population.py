@@ -41,6 +41,7 @@ def create_sol(create_num = 10):
 		sol_poplation.append(sol_item)
 	log.debug('======================')
 
+
 def evaluate_sol(ex_eval_func):
 	'''
 	呼び出し元から受け取った評価関数をもとに、各解を評価
@@ -55,5 +56,6 @@ def evolve_sol():
 	'''
 	解を変化させる
 	'''
+	pass
 	
 
