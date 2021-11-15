@@ -67,7 +67,7 @@ def hist_2array(list_a, list_b):
     '''
     
     # DICE係数を用いる
-    # https://mieruca-ai.com/ai/jaccard_dice_simpson/
+    # https://mieruca-ai.com/ai/jaccard_dice_simpson/ より拝借
     # *各要素のDICE係数を掛け合わせ総合類似度を計算
     
     # 集合Aと集合Bの積集合(set型)を作成
