@@ -2,56 +2,40 @@
 
 - バージョン
 
-3.7 <= `$ python --version` <= 3.9
+3.7 <= `$ python --version` <= 3.9  
 
 - パッケージインストール
   
-requirements.txtに記載。
+詳しくはrequirements.txtに記載。
 
 `$ pip install -r requirements.txt`
 
-- ファイル配置
-
-``` 
-- windows/
-- data/ # 外部からお取り寄せ
-  - hakodate_01.pkl
-	-	hakodate_02.pkl
-  - hakodate_03.pkl
-  - naha_01.pkl
-	- naha_02.pkl
-  - naha_03.pkl
-  - scenario.csv
-- example_mop.py
-- example_sop.py
-- requirements.txt
-- README.md
-- OFFICEL-README.md
-```
 
 ## 実行
 
 ### コマンド
 
-#### ready
+#### 下準備
+
+cythonを導入しているため、以下のコマンドでcython形式にすることが可能
 
 ```bash
-
 # cythonから必要なファイルを生成
 $ python build.py
-
 # 不要なファイルを削除
 $ python clean.py
 ```
-#### resolve
+#### 解の提出
 
-以下のコマンドルールに従い動作
-`$ $ python windows/syn_pop.py [query] [payment] [function id] [city] [seeds]`
+【テスト】
+`$ python test/windows/syn_pop.py [query] [payment] [function id] [city] [seeds]`
 
+【実際のサーバー】
+`comming soon`
 
 | 引数 | 意味 | 値の例 |
 | -------- | -------- | -------- |
-| `query`    | 支給対象の条件．DataFrameに対するqueryを定義する文字列．"" で囲んでください．スペースの入れ方，カンマの入れ方は例のようにしてください．| `"family_type_id == [0,3,4] and role_household_type_id == [0,1,10,11] and industry_type_id == [-1,130,160] and employment_type_id == [20,30] and company_size_id == [-1,5,10]"` |
+| `query`    | 支給対象の条件．DataFrameに対するqueryを定義する文字列．"" で囲む．| `"family_type_id == [0,3,4] and role_household_type_id == [0,1,10,11] and industry_type_id == [-1,130,160] and employment_type_id == [20,30] and company_size_id == [-1,5,10]"` |
 | `payment` | 給付金額．float型の金額(単位:万円)． | `7.5` |
 | `function id` | 解(`query`, `payment`)を評価する目的関数のidのリスト.`""`で囲んでください． | `"[1,2]"` |
 | `city` | 都市を表す文字列．`naha`, `hakodate`のいずれか． | `naha` |
@@ -70,9 +54,9 @@ $ python clean.py
 => ` [f_2, f_2_list, judge, slack_list] `
 
 - `f_1`: $F_1$の目的関数値
-- `f_1_list`: 各条件で実行した生の$F_1$値（この平均が$F_1$になります）のリスト
+- `f_1_list`: 各条件で実行した生の$F_1$値（この平均が$F_1$）のリスト
 - `f_2`: $F_2$の目的関数値
-- `f_2_list`: 各条件で実行した生の$F_2$値（この平均が$F_2$になります）のリスト
+- `f_2_list`: 各条件で実行した生の$F_2$値（この平均が$F_2$）のリスト
 - `feasible`: 解が支給対象の制約条件を満たすかどうか（`True`か`False`）
 - `slack_list`: 各条件で実行したときの制約の上限金額と支給金額との差のリスト．マイナスなら制約を満たしておらず，違反している金額を表す．
 ### 実行例
