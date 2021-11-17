@@ -25,6 +25,11 @@ const.ATTRIBUTE_NAME_LIST = (
     'company_size_id'
 )
 
+const.FUNCTION_ID = 'function_id'
+const.CITY = 'city'
+const.SEEDS = 'seeds'
+
+
 # 家族類型
 const.FAMILY_TYPE_ID = (
     0,   # 単独世帯
