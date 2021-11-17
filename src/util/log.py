@@ -12,7 +12,7 @@ from logging import INFO, DEBUG, WARN, ERROR
 LOG_LEVEL = DEBUG
 
 # ログをファイル出力するか否か
-IS_LOG_OUTPUT = True
+IS_LOG_OUTPUT = False
 
 # ログの設定
 logger = getLogger(__name__)
