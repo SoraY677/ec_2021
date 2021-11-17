@@ -1,15 +1,18 @@
 '''
 ログを作成管理スクリプト
 '''
+import sys
+
 from logging import getLogger, StreamHandler, handlers
 from logging import INFO, DEBUG, WARN, ERROR
+
 
 # ログの対象レベル
 # DEBUG, INFO, WARN, ERROR　から選択
 LOG_LEVEL = DEBUG
 
 # ログをファイル出力するか否か
-IS_LOG_OUTPUT = False
+IS_LOG_OUTPUT = True
 
 # ログの設定
 logger = getLogger(__name__)
@@ -69,6 +72,7 @@ def error(log_str):
     - log_str (str): 書き込む文字列
     '''
     logger.error('ERROR:' + str(log_str))
+    sys.exit(1)
 
 
 # example
