@@ -14,9 +14,9 @@ from typing import List
 from ..util import const
 from ..util import log
 
-const.PAYMENT_NAME = 'payment'
+const.PAYMENT_KEY = 'payment'
 
-const.ATTRIBUTE_NAME_LIST = (
+const.ATTRIBUTE_KEY_LIST = (
     'family_type_id',
     'role_household_type_id',
     'industry_type_id',
@@ -24,9 +24,9 @@ const.ATTRIBUTE_NAME_LIST = (
     'company_size_id'
 )
 
-const.FUNCTION_ID = 'function_id'
-const.CITY = 'city'
-const.SEEDS = 'seeds'
+const.FUNCTION_ID_KEY = 'function_id'
+const.CITY_KEY = 'city'
+const.SEEDS_KEY = 'seeds'
 
 
 # 家族類型

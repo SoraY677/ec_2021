@@ -33,8 +33,8 @@ def tracking_evolve(prudent_sol, prudent_eval, aggresive_sol,aggresive_eval):
 
     # 類似度計算
     hist_ratio = 1
-    hist_ratio *= hist_2num(prudent_sol[const.PAYMENT_NAME], aggresive_sol[const.PAYMENT_NAME])
-    for key in const.ATTRIBUTE_NAME_LIST:
+    hist_ratio *= hist_2num(prudent_sol[const.PAYMENT_KEY], aggresive_sol[const.PAYMENT_NAME])
+    for key in const.ATTRIBUTE_KEY_LIST:
         hist_ratio *= hist_2array(prudent_sol[key], aggresive_sol[key]) 
     log.debug('類似度:' + str(hist_ratio))
 

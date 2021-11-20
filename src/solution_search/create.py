@@ -33,12 +33,12 @@ def create_init_sol(function_id=None, city=None, seeds=None):
         log.error('引数の指定が足りません！')
 
     # 給付金額を決定
-    result[const.PAYMENT_NAME] = 5 
+    result[const.PAYMENT_KEY] = 5 
 
     # オプション決め
-    result[const.FUNCTION_ID] = function_id
-    result[const.CITY] = city
-    result[const.SEEDS] = seeds
+    result[const.FUNCTION_ID_KEY] = function_id
+    result[const.CITY_KEY] = city
+    result[const.SEEDS_KEY] = seeds
 
 
     # 各属性に対してランダムで属性を取得するという処理

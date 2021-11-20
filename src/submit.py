@@ -28,12 +28,12 @@ def _sol_encode(sol):
 	'''
 	# 各属性の値を整形
 	
-	attr_str = " and ".join(["{0} == {1}".format(str(key),str(sol[key]).replace(' ','')) for key in const.ATTRIBUTE_NAME_LIST])
+	attr_str = " and ".join(["{0} == {1}".format(str(key),str(sol[key]).replace(' ','')) for key in const.ATTRIBUTE_KEY_LIST])
 
 
 	# コマンドに沿うように配列でラップ
 	# ex) "family_type_id == [0,3,4,60,70,80] and role_household_type_id == [0,1,21,30,31] and industry_type_id == [-1,10,20,30,50,60,80,90,100,160,170,200] and employment_type_id == [-1,20,30] and company_size_id == [-1,5,10]" 9 "[2]" hakodate "[123,42,256]"
-	return [str(attr_str), str(sol[const.PAYMENT_NAME]), str(sol[const.FUNCTION_ID]), str(sol[const.CITY]), str(sol[const.SEEDS])] 
+	return [str(attr_str), str(sol[const.PAYMENT_NAME_KEY]), str(sol[const.FUNCTION_ID_KEY]), str(sol[const.CITY_KEY]), str(sol[const.SEEDS_KEY])] 
 
 def _sol_decode(eval_str):
 	'''
@@ -46,7 +46,6 @@ def _sol_decode(eval_str):
 	- list: 結果の配列
 	'''
 	return eval(eval_str)
-
 
 def regist(sol = None, base_command = None):
 	'''
@@ -68,8 +67,6 @@ def regist(sol = None, base_command = None):
 	log.info('create solution:' + str(command))
 	# コマンドリストに追加
 	_command_list.append(command)
-
-
 	
 def run():
 	'''
@@ -99,8 +96,6 @@ def run():
 	_init()
 
 	return result_list[0]
-
-
 
 _init() # 初期化しておく
 
