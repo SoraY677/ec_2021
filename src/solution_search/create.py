@@ -3,13 +3,15 @@
 
 '''
 import sys
-import common
 from copy import copy 
 from random import seed, shuffle, randint
 
-sys.path.append('../')
-from util import const
-from util import log
+
+from . import common
+
+# sys.path.append('../')
+from ..util import const
+from ..util import log
 
 
 def create_init_sol(function_id=None, city=None, seeds=None):
