@@ -11,9 +11,8 @@ import sys
 from copy import copy
 from typing import List
 
-sys.path.append('../')
-from util import const
-from util import log
+from ..util import const
+from ..util import log
 
 const.PAYMENT_NAME = 'payment'
 
