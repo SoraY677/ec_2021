@@ -35,7 +35,7 @@ def _sol_encode(sol):
 	# ex) "family_type_id == [0,3,4,60,70,80] and role_household_type_id == [0,1,21,30,31] and industry_type_id == [-1,10,20,30,50,60,80,90,100,160,170,200] and employment_type_id == [-1,20,30] and company_size_id == [-1,5,10]" 9 "[2]" hakodate "[123,42,256]"
 	return [str(attr_str), str(sol[const.PAYMENT_NAME]), str(sol[const.FUNCTION_ID]), str(sol[const.CITY]), str(sol[const.SEEDS])] 
 
-def _sol_decode(eval):
+def _sol_decode(eval_str):
 	'''
 	評価値(文字列)を分解して、関数内で扱える形に整形
 
@@ -45,8 +45,7 @@ def _sol_decode(eval):
 	Returns:
 	- list: 結果の配列
 	'''
-	# TODO
-	return eval
+	return eval(eval_str)
 
 
 def regist(sol = None, base_command = None):
@@ -89,16 +88,17 @@ def run():
 		subprocess_list = tuple(subprocess_list)
 		# 全てのプロセスが終了するまでの待機
 		for proc in subprocess_list:
-			log.debug(proc.communicate())
-			result_list.append(proc.communicate())
+			result = proc.communicate()[0]
+			log.debug(result)
+			result_list.append(_sol_decode(result))
 
 		for proc in subprocess_list:
-			result_list.append(_sol_decode)
 			proc.terminate()
+
 	# 全ての処理が終了したら最初の状態に戻す
 	_init()
 
-	return result_list
+	return result_list[0]
 
 
 
