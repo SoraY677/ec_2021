@@ -26,26 +26,62 @@ def _sol_encode(sol):
 	Returns:
 	- str: 提出する解の文字列つなぎ
 	'''
-	# 各属性の値を整形
+	res = None
+
+	# クエリーを生成
+	query = " and ".join(["{0} == {1}".format(str(key),str(sol[key]).replace(' ','')) for key in const.ATTRIBUTE_KEY_LIST])
+
 	
-	attr_str = " and ".join(["{0} == {1}".format(str(key),str(sol[key]).replace(' ','')) for key in const.ATTRIBUTE_KEY_LIST])
+	if const.isTest:
+		res = [str(query), str(sol[const.PAYMENT_KEY]), str(sol[const.FUNCTION_ID_KEY]), str(sol[const.CITY_KEY]), str(sol[const.SEEDS_KEY])] 
+
+	else:
+		res = {}
+		res['query'] = str(query)
+		res['payment'] = sol[const.PAYMENT_KEY]
 
 
-	# コマンドに沿うように配列でラップ
-	# ex) "family_type_id == [0,3,4,60,70,80] and role_household_type_id == [0,1,21,30,31] and industry_type_id == [-1,10,20,30,50,60,80,90,100,160,170,200] and employment_type_id == [-1,20,30] and company_size_id == [-1,5,10]" 9 "[2]" hakodate "[123,42,256]"
-	return [str(attr_str), str(sol[const.PAYMENT_KEY]), str(sol[const.FUNCTION_ID_KEY]), str(sol[const.CITY_KEY]), str(sol[const.SEEDS_KEY])] 
+	return res 
 
-def _sol_decode(eval_str):
+def _sol_decode(eval_arg):
 	'''
 	評価値(文字列)を分解して、関数内で扱える形に整形
 
 	Args:
-	- eval (str): 評価値(文字列)
+	- eval_arg (str): 評価値
 
 	Returns:
 	- list: 結果の配列
 	'''
-	return eval(eval_str)
+	res = {}
+
+
+	if const.isTest:
+		eval_result = eval(eval_arg)
+		# 目的関数が一つ
+		if const.FUNCTION_ID_LEN == 1:
+			res['objective'] = eval_result[0]
+			res['feasible'] = eval_result[2]
+			res['info'] = eval_result[1]
+		# 目的関数が二つ
+		else:
+			res['objective'] = [eval_result[0], eval_result[2]]
+			res['feasible'] = eval_result[4]
+			res['info'] = [eval_result[1], eval_result[3]]
+
+	else: # TODO: 本番環境に投げた際の物だが、おそらくうまくいかないので、後で直すこと
+		res['objective'] = eval_arg['objective']
+
+		# マイナスの値があったら実行不可能解
+		isFeasible = True
+		for con in eval_arg['constraint']:
+			if con < 0:
+				isFeasible = False
+			
+		res['feasible'] = isFeasible
+		res['info'] = eval_arg['info']
+
+	return res
 
 def regist(sol = None, base_command = None):
 	'''
@@ -64,6 +100,7 @@ def regist(sol = None, base_command = None):
 	# コマンドリストに追加
 	_command_list.append(command)
 	
+
 def run():
 	'''
 	並列実行する
