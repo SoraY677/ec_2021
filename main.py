@@ -26,8 +26,8 @@ if __name__ == "__main__":
 		# 解の評価
 		process.evaluate_sol(base_command=["python","test/windows/syn_pop.py"])
 
-	# 	# 最良解の探索
-	# 	pass
+		# 最良解の探索
+		pass
 
 	# タイマー計測終了
 	end_time = time.time()
