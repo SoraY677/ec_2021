@@ -144,7 +144,7 @@ def get_need_attr(array: list, attr_id):
             constraint_array = (-1,)
         elif attr_id == 4:
             # 非就業者 > 短時間労働者，臨時労働者 > 一般労働者
-            constraint_array = (-1, (10, 20), 30)
+            constraint_array = (-1, (20, 30), 10)
         elif attr_id == 5:
             # 非就業者 > 5〜9人 > 10~99人 > 100~999人 > 1000人以上
             constraint_array = (-1, 5, 10, 100, 1000)
@@ -165,16 +165,14 @@ def get_need_attr(array: list, attr_id):
             for constraint_el in constraint_array:
                 # 優先度が複数のもの
                 if type(constraint_el) is tuple:
-                    is_either_contain = False  # どちらかが含まれているフラグ
-                    # どちらかが含まれているかチェック
+                    # 含まれているかチェック
                     for el in constraint_el:
                         if el in target_array:
-                            is_either_contain = True
                             need_contain_array_length = len(no_contain_array)
                             target_array.remove(el)
-                    # どちらの要素も含まれていない場合は要素不足
-                    if is_either_contain is False:
-                        no_contain_array.append(constraint_el)
+                        # 含まれていない要素は不足
+                        else :
+                            no_contain_array.append(el)
 
                 # 優先度が単一のもの
                 else:
