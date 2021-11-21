@@ -41,12 +41,14 @@ def evaluate_sol(base_command = []):
     # 解集団をまとめて評価するためのラッパー関数
     def submit_pop(sol_pop):
         for sol in sol_pop:
-            submit.regist(sol['solution'],base_command)
+            submit.regist(sol['solution'], base_command)
         return submit.run()
 
 
     population.evaluate_sol(submit_pop)
 
-def search_sol():
-    pass
-    # return (おそらく)
+def evolove_sol( ):
+    '''
+    解を進化させる
+    '''
+    population.evolve_sol()
