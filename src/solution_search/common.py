@@ -14,7 +14,7 @@ from typing import List
 from ..util import const
 from ..util import log
 
-const.PAYMENT_KEY = 'payment'
+
 
 const.ATTRIBUTE_KEY_LIST = (
     'family_type_id',
@@ -23,7 +23,7 @@ const.ATTRIBUTE_KEY_LIST = (
     'employment_type_id',
     'company_size_id'
 )
-
+const.PAYMENT_KEY = 'payment'
 const.FUNCTION_ID_KEY = 'function_id'
 const.CITY_KEY = 'city'
 const.SEEDS_KEY = 'seeds'
