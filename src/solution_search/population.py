@@ -2,8 +2,9 @@
 - 解探索に用いられる変数全体の保持
 - 解探索中の各処理をまとめる
 '''
-import sys
-from src.solution_search import create
+from . import create
+from . import evolution
+
 from random import randint
 
 
@@ -17,7 +18,7 @@ const.SEARCH_DIRECTION_PLUS = 1 # 探索の際に属性や金額を増やす方�
 const.SEARCH_DIRECTION_MINUS = -1 # 探索の際に属性や金額を増やす方向で動く
 
 sol_poplation = []
-eval_poplation = [0 for _ in range(10)]
+eval_poplation = []
 
 def create_sol(create_num, function_id, city, seeds):
 	'''
@@ -53,8 +54,9 @@ def evaluate_sol(ex_eval_func):
 
 def evolve_sol():
 	'''
-	解を変化させる
+	解を進化させる
 	'''
+
 	pass
 	
 
