@@ -3,16 +3,16 @@
 人工蜂コロニーアルゴリズム
 '''
 import sys
-sys.path.append('../')
-from util import const
-from util import log
+from ..util import const
+from ..util import log
 
 const.EVOLVE_THRESHOLD = 0.05
 
-def challenge_evolve():
+def challenge_evolve(sol, eval ):
     '''
-    解を受け取り、解に少し変更を加えて新たな解を生成
+    解に少し変更を加えて新たな解の生成を試みる
     '''
+
     pass
 
 def tracking_evolve(prudent_sol, prudent_eval, aggresive_sol,aggresive_eval):
