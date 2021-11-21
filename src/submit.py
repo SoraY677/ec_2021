@@ -3,8 +3,8 @@
 '''
 import subprocess
 
-from src.util import const
-from src.util import log
+from .util import const
+from .util import log
 
 # コマンド一式が入る配列
 _command_list = None
@@ -33,7 +33,7 @@ def _sol_encode(sol):
 
 	# コマンドに沿うように配列でラップ
 	# ex) "family_type_id == [0,3,4,60,70,80] and role_household_type_id == [0,1,21,30,31] and industry_type_id == [-1,10,20,30,50,60,80,90,100,160,170,200] and employment_type_id == [-1,20,30] and company_size_id == [-1,5,10]" 9 "[2]" hakodate "[123,42,256]"
-	return [str(attr_str), str(sol[const.PAYMENT_NAME_KEY]), str(sol[const.FUNCTION_ID_KEY]), str(sol[const.CITY_KEY]), str(sol[const.SEEDS_KEY])] 
+	return [str(attr_str), str(sol[const.PAYMENT_KEY]), str(sol[const.FUNCTION_ID_KEY]), str(sol[const.CITY_KEY]), str(sol[const.SEEDS_KEY])] 
 
 def _sol_decode(eval_str):
 	'''
@@ -57,14 +57,10 @@ def regist(sol = None, base_command = None):
 	'''
 	global _command_list
 
-	if  base_command is None or \
-		sol is None:
-		log.error('引数に指定されていないものが存在します！')
-
 	# コマンドを作成
 	command = base_command 
 	command.extend(_sol_encode(sol))
-	log.info('create solution:' + str(command))
+	log.info('create command:' + str(command))
 	# コマンドリストに追加
 	_command_list.append(command)
 	
