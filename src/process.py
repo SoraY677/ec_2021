@@ -5,7 +5,7 @@ from .util import log
 from .solution_search import population
 from . import submit 
 
-def create_sol(sol_max = 0, function_id=None, city=None, seeds=None):
+def create_sol(sol_max, function_id=None, city=None, seeds=None):
     '''
     解を生成
 
@@ -41,7 +41,7 @@ def evaluate_sol(base_command = []):
     # 解集団をまとめて評価するためのラッパー関数
     def submit_pop(sol_pop):
         for sol in sol_pop:
-            submit.regist(sol['solution'], base_command)
+            submit.regist(sol, base_command)
         return submit.run()
 
 

@@ -2,18 +2,114 @@
 解探索スクリプト
 人工蜂コロニーアルゴリズム
 '''
-import sys
+from random import random, randint, shuffle
+from copy import copy
+
+from types import new_class
 from ..util import const
 from ..util import log
+from . import create
 
 const.EVOLVE_THRESHOLD = 0.05
 
-def challenge_evolve(sol, eval ):
+
+def get_attr_noinclude_list(cur_list, attr_key):
     '''
-    解に少し変更を加えて新たな解の生成を試みる
+    まだ含まれていない要素のリストを取得
+
+    Args:
+    - cur_list (list) : 現在の要素
+    - attr_key (str): 属性のキー名
     '''
 
-    pass
+    diff = set(cur_list) ^  set(const.ALL_ATTRIBUTE_DICT[attr_key])
+    return list(diff)
+
+
+def challenge_evolve_prudent(sol, feasible):
+    '''
+    解に少し変更を加えて新たな解の生成を試みる
+
+    Args:
+    - sol [dict] : 現在の解情報
+    - feasible [bool] : 実行可能解か否か -> True/False
+    '''
+    new_sol = copy(sol)
+
+    # 解の評価結果が制約条件を満たしていない時
+    if feasible == False:
+        change_attr_max = randint(1,3)
+        shuffle_list = copy(list(const.ATTRIBUTE_KEY_LIST))
+        shuffle(shuffle_list)
+        shuffle_list = shuffle_list[0:change_attr_max-1]
+        for key in shuffle_list:
+            if len(new_sol[key]) > 0 :
+                new_sol[key].pop(randint(0, len(new_sol[key])-1))
+        # 金額の変化
+        if randint(0,100) < [80,50,30][3 - change_attr_max]:
+            new_sol[const.PAYMENT_KEY] /= random() + 1
+            new_sol[const.PAYMENT_KEY] = round(new_sol[const.PAYMENT_KEY], 5)
+    
+    # 解の評価結果が制約条件を満たしている
+    else :
+        change_attr_max = randint(1,5)
+        for _ in range(change_attr_max):
+            target_key = const.ATTRIBUTE_KEY_LIST[randint(0,len(const.ATTRIBUTE_KEY_LIST) - 1)]
+            # 50%で要素増加
+            if randint(0, 100) > 50:
+                noinclude_list = get_attr_noinclude_list(new_sol[target_key], target_key)
+                
+                if len(noinclude_list) > 0:
+                    new_sol[target_key].append(noinclude_list[randint(0,len(noinclude_list)-1)])
+            # 残り50%で要素削減
+            else:
+                new_sol[target_key].pop(randint(0, len(sol[target_key])-1))
+
+        # 金額の変化        
+        new_sol[const.PAYMENT_KEY] /= random() * 2 + 0.000001
+        new_sol[const.PAYMENT_KEY] = round(new_sol[const.PAYMENT_KEY], 5)
+
+
+    log.info('new_sol:' + str(new_sol))
+    return new_sol
+
+def challenge_evolve_agressive(sol):
+    '''
+    解を大幅に変化
+
+    Args:
+    - sol (dict): 解情報
+
+    Returns:
+    - dict: 新規解情報
+    '''
+
+    new_sol = copy(sol)
+    # 完全ランダム再生成
+    if random() > 0.8:
+        new_sol = create.create_init_sol(const.FUNCTION_ID, const.CITY_ID, const.SEEDS_ID)
+
+    else:
+        change_attr_max = randint(1,15)
+        for _ in range(change_attr_max):
+            target_key = const.ATTRIBUTE_KEY_LIST[randint(0, len(const.ATTRIBUTE_KEY_LIST) - 1)]
+        
+            if randint(0, 100) > 50:
+                noinclude_list = get_attr_noinclude_list(new_sol[target_key], target_key)
+                if len(noinclude_list) > 0:
+                    new_sol[target_key].append(noinclude_list[randint(0,len(noinclude_list)-1)])
+            # 残り50%で要素削減
+            else:
+                new_sol[target_key].pop(randint(0, len(sol[target_key])-1))
+
+    
+        for _ in range(5):
+            new_sol[const.PAYMENT_KEY] /= random() * 2 + 0.000001
+            new_sol[const.PAYMENT_KEY] = round(new_sol[const.PAYMENT_KEY], 5)
+
+    return new_sol
+
+
 
 def tracking_evolve(prudent_sol, prudent_eval, aggresive_sol,aggresive_eval):
     '''
@@ -33,14 +129,15 @@ def tracking_evolve(prudent_sol, prudent_eval, aggresive_sol,aggresive_eval):
 
     # 類似度計算
     hist_ratio = 1
-    hist_ratio *= hist_2num(prudent_sol[const.PAYMENT_KEY], aggresive_sol[const.PAYMENT_NAME])
+    hist_ratio *= hist_2num(prudent_sol[const.PAYMENT_KEY], aggresive_sol[const.PAYMENT_KEY])
     for key in const.ATTRIBUTE_KEY_LIST:
         hist_ratio *= hist_2array(prudent_sol[key], aggresive_sol[key]) 
-    log.debug('類似度:' + str(hist_ratio))
+    log.info('類似度:' + str(hist_ratio))
 
     # 類似度が閾値を超えたら
     if hist_ratio < const.EVOLVE_THRESHOLD:
-        return True
+        if prudent_eval < aggresive_eval:
+            return True
 
     return False
 

@@ -6,8 +6,8 @@ from src import process
 
 const.isTest = True
 
-const.SEARCH_MAX = 1 # 解探索限界で定義
-const.POPLATION_MAX = 1 # 扱う解集合の数を定義
+const.SEARCH_MAX = 30 # 解探索限界で定義
+const.POPLATION_MAX = 2 # 扱う解集合の数を定義
 const.FUNCTION_ID = "[1]"
 const.CITY_ID = "hakodate"
 const.SEEDS_ID = "[123,42,256]"

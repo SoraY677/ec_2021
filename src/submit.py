@@ -3,6 +3,8 @@
 '''
 import subprocess
 
+from copy import copy
+
 from .util import const
 from .util import log
 
@@ -60,12 +62,14 @@ def _sol_decode(eval_arg):
 		eval_result = eval(eval_arg)
 		# 目的関数が一つ
 		if const.FUNCTION_ID_LEN == 1:
-			res['objective'] = eval_result[0]
+			res['objective'] = 0 if eval_result[0] is None else eval_result[0]
 			res['feasible'] = eval_result[2]
 			res['info'] = eval_result[1]
 		# 目的関数が二つ
 		else:
 			res['objective'] = [eval_result[0], eval_result[2]]
+			res['objective'][0] = 0 if res['objective'][0] is None else res['objective'][0]
+			res['objective'][1] = 0 if res['objective'][1] is None else res['objective'][1]
 			res['feasible'] = eval_result[4]
 			res['info'] = [eval_result[1], eval_result[3]]
 
@@ -81,6 +85,7 @@ def _sol_decode(eval_arg):
 		res['feasible'] = isFeasible
 		res['info'] = eval_arg['info']
 
+	log.info('response result:' + str(res))
 	return res
 
 def regist(sol = None, base_command = None):
@@ -94,7 +99,7 @@ def regist(sol = None, base_command = None):
 	global _command_list
 
 	# コマンドを作成
-	command = base_command 
+	command = base_command.copy() 
 	command.extend(_sol_encode(sol))
 	log.info('create command:' + str(command))
 	# コマンドリストに追加
@@ -128,7 +133,7 @@ def run():
 	# 全ての処理が終了したら最初の状態に戻す
 	_init()
 
-	return result_list[0]
+	return result_list
 
 _init() # 初期化しておく
 
