@@ -12,10 +12,10 @@ from logging import INFO, DEBUG, WARN, ERROR
 LOG_LEVEL = DEBUG
 
 # ログをファイル出力するか否か
-IS_LOG_OUTPUT = False
+IS_LOG_OUTPUT = True
 
 # ログの設定
-logger = getLogger(__name__)
+logger = getLogger('build_log')
 
 if IS_LOG_OUTPUT:
     handler = \
@@ -23,7 +23,6 @@ if IS_LOG_OUTPUT:
             r'build.log',
             mode='w',
             encoding='utf-8',
-            maxBytes=100,
             backupCount=3
         )
 else:
