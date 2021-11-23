@@ -100,7 +100,8 @@ def challenge_evolve_agressive(sol):
                     new_sol[target_key].append(noinclude_list[randint(0,len(noinclude_list)-1)])
             # 残り50%で要素削減
             else:
-                new_sol[target_key].pop(randint(0, len(sol[target_key])-1))
+                if len(sol[target_key]) > 0 :
+                    new_sol[target_key].pop(randint(0, len(sol[target_key])-1))
 
     
         for _ in range(5):
