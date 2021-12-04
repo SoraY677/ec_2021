@@ -4,7 +4,9 @@ from src.util import log
 
 from src import process
 
-const.isTest = True
+const.ANALYZE_OPTIMAZE_SOLUTION = 'analyze/OptimalSolution-graph'
+
+const.isTest = True 
 
 const.SEARCH_MAX = 100 # 解探索限界で定義
 const.POPLATION_MAX = 2 # 扱う解集合の数を定義

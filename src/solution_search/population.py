@@ -10,6 +10,7 @@ from random import randint
 
 from ..util import const
 from ..util import log
+from ..util import graph
 
 const.SEARCH_STYLE_PRUDENT = 0 # 探索のスタイルが慎重派 (小さく変化)
 const.SEARCH_STYLE_AGGRESSIVE = 1 # 探索のスタイルが積極派 (大きく変化)
@@ -45,6 +46,8 @@ def evaluate_sol(ex_eval_func):
 	'''
 	global eval_poplation
 	eval_poplation = ex_eval_func(sol_poplation)
+	graph.update_create_optimal_solution_data_file(eval_poplation)
+
 
 
 def evolve_sol():
