@@ -76,6 +76,8 @@ def evolve_sol():
 			else:
 			 	sol_poplation[i] = evolution.challenge_evolve_agressive(sol_poplation[i])
 
+			
+
 	log.info('evolve after:' + str(sol_poplation))
 
 	pass

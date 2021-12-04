@@ -192,8 +192,7 @@ def get_need_attr(array: list, attr_id):
                 result.append(no_contain_array[i])
 
     except Exception as e:
-        log.error(e)
-        pass
+        log.error('attr_id wrong')
 
     return result
 

@@ -49,7 +49,7 @@ def create_init_sol(function_id, city, seeds):
         # 制約条件チェックを走らせ不要分を配列に追加
         lack_attr = tuple(common.get_need_attr(target, attr_i))
         
-        # log.debug('lack:' + str(lack_attr))
+        log.debug('lack:' + str(lack_attr))
         for attr in lack_attr:
             if type(attr) is tuple:
                 target.append(attr[randint(0,len(attr)-1)])
@@ -57,7 +57,7 @@ def create_init_sol(function_id, city, seeds):
                 target.append(attr)
 
         target.sort()
-        # log.debug('result:' + str(target))
+        log.debug('result:' + str(target))
         # 最終的な生成解の属性要素
         result[attr_key] = copy(target)
         attr_i += 1

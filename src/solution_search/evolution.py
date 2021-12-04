@@ -8,7 +8,9 @@ from copy import copy
 from types import new_class
 from ..util import const
 from ..util import log
+
 from . import create
+from . import common
 
 const.EVOLVE_THRESHOLD = 0.05
 
@@ -45,6 +47,10 @@ def challenge_evolve_prudent(sol, feasible):
         for key in shuffle_list:
             if len(new_sol[key]) > 0 :
                 new_sol[key].pop(randint(0, len(new_sol[key])-1))
+                new_sol[key].pop(randint(0, len(sol[key])-1))
+                lack_arr = common.get_need_attr(new_sol[key],const.ATTRIBUTE_KEY_LIST.index(key) + 1).copy()
+                new_sol[key].extend(lack_arr)
+                new_sol[key].sort()
         # 金額の変化
         if randint(0,100) < [80,50,30][3 - change_attr_max]:
             new_sol[const.PAYMENT_KEY] /= random() + 1
@@ -64,6 +70,10 @@ def challenge_evolve_prudent(sol, feasible):
             # 残り50%で要素削減
             else:
                 new_sol[target_key].pop(randint(0, len(sol[target_key])-1))
+                lack_arr = common.get_need_attr(new_sol[target_key], const.ATTRIBUTE_KEY_LIST.index(target_key) + 1).copy()
+                new_sol[target_key].extend(lack_arr)
+            
+            new_sol[target_key].sort()
 
         # 金額の変化        
         new_sol[const.PAYMENT_KEY] /= random() * 2 + 0.000001
@@ -93,7 +103,7 @@ def challenge_evolve_agressive(sol):
         change_attr_max = randint(1,15)
         for _ in range(change_attr_max):
             target_key = const.ATTRIBUTE_KEY_LIST[randint(0, len(const.ATTRIBUTE_KEY_LIST) - 1)]
-        
+            # 50%で要素を追加
             if randint(0, 100) > 50:
                 noinclude_list = get_attr_noinclude_list(new_sol[target_key], target_key)
                 if len(noinclude_list) > 0:
@@ -102,6 +112,11 @@ def challenge_evolve_agressive(sol):
             else:
                 if len(sol[target_key]) > 0 :
                     new_sol[target_key].pop(randint(0, len(sol[target_key])-1))
+
+            # 不足分を補う
+            lack_arr = common.get_need_attr(new_sol[target_key], const.ATTRIBUTE_KEY_LIST.index(target_key) + 1).copy()
+            new_sol[target_key].extend(lack_arr)
+            new_sol[target_key].sort()
 
     
         for _ in range(5):
