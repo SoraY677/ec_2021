@@ -1,21 +1,13 @@
 '''
-定数値を定義するスクリプト
-アッパースネークケースを採用
-
-[ex]
-const.SAMPLE_DEFINE = True
+基本事項定義
 '''
-
-
 from copy import copy
-from typing import List
 from random import randint
 
 from ..util import const
 from ..util import log
 
-
-
+# キー属性の定義
 const.ATTRIBUTE_KEY_LIST = (
     'family_type_id',
     'role_household_type_id',
@@ -96,6 +88,7 @@ const.COMPANY_SIZE_ID = (
     1000,  	# 1000人以上
 )
 
+# 各種別の属性配列
 const.ALL_ATTRIBUTE_DICT = {
     'family_type_id': const.FAMILY_TYPE_ID,
     'role_household_type_id': const.ROLE_HOUSEHOLD_TYPE_ID,
@@ -103,7 +96,6 @@ const.ALL_ATTRIBUTE_DICT = {
     'employment_type_id': const.EMPLOYMENT_TYPE_ID,
     'company_size_id': const.COMPANY_SIZE_ID
 }
-
 
 def get_need_attr(cur_list: list, attr_id):
     '''
