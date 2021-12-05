@@ -10,7 +10,7 @@ def _add_optimal_solution2list(res_list):
 	評価値をリストに追加
 
 	Args:
-		res_list (list): 1世代における評価値のリスト
+	- res_list (list): 1世代における評価値のリスト
 	'''
 	global optimal_solution_list
 	global max_optimal
@@ -32,7 +32,7 @@ def update_create_optimal_solution_data_file(res_list):
 	世代交代時に実行される想定
 
 	Args:
-		res_list (list): 1世代における評価値のリスト
+	- res_list (list): 1世代における評価値のリスト
 	'''
 	_add_optimal_solution2list(res_list)
 	_create_optimal_solution_data_file()
