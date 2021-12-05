@@ -34,7 +34,7 @@ def _sol_encode(sol):
 	query = " and ".join(["{0} == {1}".format(str(key),str(sol[key]).replace(' ','')) for key in const.ATTRIBUTE_KEY_LIST])
 
 	
-	if const.isTest:
+	if const.IS_TEST:
 		res = [str(query), str(sol[const.PAYMENT_KEY]), str(sol[const.FUNCTION_ID_KEY]), str(sol[const.CITY_KEY]), str(sol[const.SEEDS_KEY])] 
 
 	else:
@@ -58,7 +58,7 @@ def _sol_decode(eval_arg):
 	res = {}
 
 
-	if const.isTest:
+	if const.IS_TEST:
 		eval_result = eval(eval_arg)
 		# 目的関数が一つ
 		if const.FUNCTION_ID_LEN == 1:
@@ -88,7 +88,7 @@ def _sol_decode(eval_arg):
 	log.info('response result:' + str(res))
 	return res
 
-def regist(sol = None, base_command = None):
+def regist(sol = None):
 	'''
 	解提出用にコマンド登録を行う
 
@@ -99,7 +99,7 @@ def regist(sol = None, base_command = None):
 	global _command_list
 
 	# コマンドを作成
-	command = base_command.copy() 
+	command = const.BASE_COMMAND.copy() 
 	command.extend(_sol_encode(sol))
 	log.info('create command:' + str(command))
 	# コマンドリストに追加
