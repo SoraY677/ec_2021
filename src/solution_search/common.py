@@ -10,6 +10,7 @@ const.SAMPLE_DEFINE = True
 import sys
 from copy import copy
 from typing import List
+from random import randint
 
 from ..util import const
 from ..util import log
@@ -105,12 +106,12 @@ const.ALL_ATTRIBUTE_DICT = {
 }
 
 
-def get_need_attr(array: list, attr_id):
+def get_need_attr(cur_list: list, attr_id):
     '''
     指定の配列(各属性)に対して、制約条件に当てはめて足りていない属性を返す
 
     Args:
-    - array (list): 検索対象とする属性の配列
+    - cur (list): 検索対象とする属性の配列
     - context_id (int): 属性種別A1 ~ A5の番号部分 (1 ~ 5)以外の指定はエラー
         - A1: 家族類型
         - A2: 世帯内役割
@@ -119,13 +120,13 @@ def get_need_attr(array: list, attr_id):
         - A5: 企業規模​
     '''
     try:
-        if type(array) is not list:
+        if type(cur_list) is not list:
             raise TypeError
 
         result = []
 
         # 渡された配列
-        target_array = copy(array)
+        target_array = copy(cur_list)
 
         # 制約条件となる配列
         # 優先度が x > y    となる場合は (x, y)
@@ -196,3 +197,27 @@ def get_need_attr(array: list, attr_id):
 
     return result
 
+def get_complete_attr(cur_list_origin, key):
+    '''
+    現状の属性に不足していた分の要素を追加した完全な配列の取得
+
+    Args:
+        cur_list_origin (list): 現状の属性配列
+        key (str): 対象の属性名
+
+    Returns:
+        list: 完成した属性の配列
+    '''
+    complete_list = copy(cur_list_origin)
+
+    # 不足している分を現在の配列に追加する処理
+    lack_attr = tuple(get_need_attr(complete_list, const.ATTRIBUTE_KEY_LIST.index(key) + 1))        
+    for attr in lack_attr:
+        if type(attr) is tuple:
+            complete_list.append(attr[randint(0,len(attr)-1)])
+        else:
+            complete_list.append(attr)
+
+    complete_list.sort()
+
+    return complete_list
