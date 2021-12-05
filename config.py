@@ -1,17 +1,22 @@
-import yaml
+'''
+全体に関する設定をするファイル
+'''
 
-from .util import const
+from src.util import const
 
 
-def init():
-	with open('config.yml', 'r') as yml:
-		config = yaml.load(yml)
+# テストモードの真偽
+const.IS_TEST = True 
 
-	const.ANALYZE_OPTIMAZE_SOLUTION = config['ANALYZE_OPTIMAZE_SOLUTION']
-	const.IS_TEST = True 
+# 解提出時の各パラメータ
+const.FUNCTION_ID = "[1]"
+const.CITY_ID = "hakodate"
+const.SEEDS_ID = "[123,42,256]"
 
-	const.SEARCH_MAX = 100 # 解探索限界で定義
-	const.POPLATION_MAX = 2 # 扱う解集合の数を定義
-	const.FUNCTION_ID = "[1]"
-	const.CITY_ID = "hakodate"
-	const.SEEDS_ID = "[123,42,256]"
+# 最適解の探索を分析する用のファイル
+const.ANALYZE_OPTIMAZE_SOLUTION = 'analyze/OptimalSolution-graph'
+
+# 解探索手法に関する定数
+const.SEARCH_MAX = 100 # 解探索数の限界
+const.POPLATION_MAX = 2 # 解集団数
+const.EVOLVE_THRESHOLD = 0.05 # 二つの解の類似度を用いた進化をする際に使用する閾値
