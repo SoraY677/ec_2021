@@ -1,20 +1,9 @@
 import time
+
+from . import config
+from src import process
 from src.util import const 
 from src.util import log
-
-from src import process
-
-const.ANALYZE_OPTIMAZE_SOLUTION = 'analyze/OptimalSolution-graph'
-
-const.isTest = True 
-
-const.SEARCH_MAX = 100 # 解探索限界で定義
-const.POPLATION_MAX = 2 # 扱う解集合の数を定義
-const.FUNCTION_ID = "[1]"
-const.CITY_ID = "hakodate"
-const.SEEDS_ID = "[123,42,256]"
-
-
 
 if __name__ == "__main__":
 
