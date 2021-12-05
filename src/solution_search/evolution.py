@@ -8,7 +8,7 @@ from copy import copy
 from ..util import const
 from ..util import log
 
-from . import create
+from . import creater
 from . import common
 
 const.HIST_BASE_PRICE = 20 # FIXME 類似度算出用の規定値
@@ -97,7 +97,7 @@ def challenge_evolve_agressive(sol):
     
     # 完全ランダム再生成
     if random() > 0.8:
-        new_sol = create.create_init_sol(const.FUNCTION_ID, const.CITY_ID, const.SEEDS_ID)
+        new_sol = creater.create_init_sol(const.FUNCTION_ID, const.CITY_ID, const.SEEDS_ID)
 
     else:
         new_sol = copy(sol)
