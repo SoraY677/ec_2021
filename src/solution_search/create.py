@@ -4,11 +4,9 @@
 from copy import copy 
 from random import shuffle, randint
 
-
 from . import common
 from ..util import const
 from ..util import log
-
 
 def create_init_sol():
     '''
