@@ -48,11 +48,7 @@ $ python tool.py -analyze
 $ python tool.py -help
 ```
 
-## 起動方法
-
-TODO  
-
-# UML
+# 📋UML
 
 ## モジュール依存関係
 
