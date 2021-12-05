@@ -193,8 +193,8 @@ def get_complete_attr(cur_list_origin, key):
     現状の属性に不足していた分の要素を追加した完全な配列の取得
 
     Args:
-        cur_list_origin (list): 現状の属性配列
-        key (str): 対象の属性名
+    - cur_list_origin (list): 現状の属性配列
+    - key (str): 対象の属性名
 
     Returns:
         list: 完成した属性の配列
