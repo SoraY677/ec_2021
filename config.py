@@ -12,7 +12,7 @@ const.IS_TEST = True
 if const.IS_TEST:
 	const.BASE_COMMAND = ["python","test/windows/syn_pop.py"]
 else:
-	const.BASE_COMMAND = []
+	const.BASE_COMMAND = [] # FIXME: 適切なコマンド
 
 # 解提出時の各パラメータ
 const.FUNCTION_ID = "[1]"
