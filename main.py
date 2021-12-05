@@ -1,6 +1,6 @@
 import time
 
-from . import config
+import config
 from src import process
 from src.util import const 
 from src.util import log
@@ -14,15 +14,15 @@ if __name__ == "__main__":
 	const.FUNCTION_ID_LEN = len(eval(const.FUNCTION_ID))
 
 	# 解の生成
-	process.create_sol(const.POPLATION_MAX, const.FUNCTION_ID, const.CITY_ID, const.SEEDS_ID)
+	process.create()
 	loop_num = const.SEARCH_MAX / const.POPLATION_MAX
 
 	for _ in range(int(loop_num)):
 		# 解の評価
-		process.evaluate_sol(base_command=["python","test/windows/syn_pop.py"])
+		process.evaluate()
 
 		# 進化
-		process.evolove_sol()
+		process.evolove()
 
 	# タイマー計測終了
 	end_time = time.time()
