@@ -24,7 +24,7 @@ command_list = {
 if __name__ == '__main__':
 
 	# 引数含めて正しい数になっていない
-	if(len(sys.argv) is not 2):
+	if(len(sys.argv) != 2):
 		print('argv is only 1.if help command need, "python tool.py -help" ')
 	
 	else:

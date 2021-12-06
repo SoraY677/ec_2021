@@ -32,9 +32,12 @@ def run():
 				shutil.rmtree(path)
 
 			# 対象では無ければより深くへ
-			else :
-				files = os.listdir(path)
-				for file in files:
-					recursive_file_check(path + "\\" + file)
+			else:
+				try:
+					files = os.listdir(path)
+					for file in files:
+						recursive_file_check(path + "\\" + file)
+				except FileNotFoundError: # ファイルが見つからなくても何もしない
+					pass
 		
 	recursive_file_check('.') # プロジェクトの最上位層から全探索
