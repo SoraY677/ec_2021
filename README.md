@@ -6,8 +6,10 @@
 ##  パッケージインストール
 詳しくはrequirements.txtに記載。  
 以下を実行。  
-`$ pip install -r requirements.txt`
 
+```bash
+pip install -r requirements.txt
+```
 # 🔨ビルド手順
 ## 下準備
 
@@ -26,7 +28,7 @@ const.SEEDS_ID = "[123,42,256]"
 
 最適解の探索を行うコマンド
 ```bash
-$ python main.py
+python main.py
 ```
 
 # 🧰分析ツール
@@ -34,18 +36,18 @@ $ python main.py
 
 - 不要なファイル・ディレクトリの削除
 ```bash
-$ python tool.py -clean
+python tool.py -clean
 ```
 
 - 分析用Web立ち上げ
 ```bash
-$ python tool.py -analyze
+python tool.py -analyze
 ```  
 -> 立ち上げ後: http://localhost:8000
 
 - help
 ```bash
-$ python tool.py -help
+python tool.py -help
 ```
 
 # 📋UML
