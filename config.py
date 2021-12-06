@@ -15,8 +15,8 @@ else:
 	const.BASE_COMMAND = [] # FIXME: 適切なコマンド
 
 # 解提出時の各パラメータ
-const.FUNCTION_ID = "[1]"
-const.CITY_ID = "hakodate"
+const.FUNCTION_ID = "[2]"
+const.CITY_ID = "naha"
 const.SEEDS_ID = "[123,42,256]"
 
 # 最適解の探索を分析する用のファイル
@@ -24,6 +24,6 @@ const.ANALYZE_OPTIMAZE_SOLUTION = 'analyze/OptimalSolution-graph'
 
 # 解探索手法に関する定数
 const.SEARCH_MAX = 100 # 解探索数の限界
-const.POPLATION_MAX = 2 # 解集団数
+const.POPLATION_MAX = 10 # 解集団数
 const.EVOLVE_THRESHOLD = 0.05 # 二つの解の類似度を用いた進化をする際に使用する閾値
 const.MULATION_THRESHOLD = 0.8 # 突然変異する閾値

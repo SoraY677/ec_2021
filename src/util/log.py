@@ -9,7 +9,7 @@ from . import const
 
 # ログの対象レベル
 # DEBUG, INFO, WARN, ERROR　から選択
-const.LOG_LEVEL = DEBUG
+const.LOG_LEVEL = INFO
 
 # ログをファイル出力するか否か
 const.IS_LOG_OUTPUT = True

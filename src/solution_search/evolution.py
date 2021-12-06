@@ -26,7 +26,7 @@ def append_one_attr_noinclude(cur_list, attr_key):
     diff = list(set(append_list) ^ set(const.ALL_ATTRIBUTE_DICT[attr_key]))
     # あればそこからランダムに一つ加えた配列を返す
     if len(diff) > 0:
-        append_list.append(diff[randint(0,len(append_list)-1)])
+        append_list.append(diff[randint(0,len(diff)-1)])
     # 無ければ元の配列をそのまま返す
     return cur_list
 
@@ -72,8 +72,9 @@ def challenge_evolve_prudent(sol, feasible):
 
             # 残り50%で要素削減
             else:
-                new_sol[target_key].pop(randint(0, len(new_sol[target_key])-1))
-                new_sol[target_key] = common.get_complete_attr(new_sol[target_key], target_key) # 不足する要素をなしにする
+                if(len(new_sol) > 0):
+                    new_sol[target_key].pop(randint(0, len(new_sol[target_key])-1))
+                    new_sol[target_key] = common.get_complete_attr(new_sol[target_key], target_key) # 不足する要素をなしにする
 
         # 金額の変化
         new_sol[const.PAYMENT_KEY] /= random() * 2 + 0.000001
@@ -97,12 +98,12 @@ def challenge_evolve_agressive(sol):
     
     # 完全ランダム再生成
     if random() > 0.8:
-        new_sol = creater.create_init_sol(const.FUNCTION_ID, const.CITY_ID, const.SEEDS_ID)
+        new_sol = creater.create_init_sol()
 
     else:
         new_sol = copy(sol)
 
-        change_attr_max = randint(1,15) # 変更する回数
+        change_attr_max = randint(10,15) # 変更する回数
         for _ in range(change_attr_max):
             target_key = const.ATTRIBUTE_KEY_LIST[randint(0, len(const.ATTRIBUTE_KEY_LIST) - 1)]
 
@@ -117,12 +118,11 @@ def challenge_evolve_agressive(sol):
 
         # 不足分を補う
         for key in const.ATTRIBUTE_KEY_LIST:
-            new_sol[key] = common.get_complete_attr(new_sol[key], target_key) 
+            new_sol[key] = common.get_complete_attr(new_sol[key], key) 
     
         # 金額を変更
-        for _ in range(5):
-            new_sol[const.PAYMENT_KEY] /= random() * 2 + 0.000001
-            new_sol[const.PAYMENT_KEY] = round(new_sol[const.PAYMENT_KEY], 5)
+        new_sol[const.PAYMENT_KEY] /= random() + 0.5
+        new_sol[const.PAYMENT_KEY] = round(new_sol[const.PAYMENT_KEY], 5)
 
     return new_sol
 
@@ -147,7 +147,7 @@ def tracking_evolve(prudent_sol, prudent_eval, aggresive_sol,aggresive_eval):
     hist_ratio *= hist_2num(prudent_sol[const.PAYMENT_KEY], aggresive_sol[const.PAYMENT_KEY])
     for key in const.ATTRIBUTE_KEY_LIST:
         hist_ratio *= hist_2array(prudent_sol[key], aggresive_sol[key]) 
-    log.info('類似度:' + str(hist_ratio))
+    log.debug('類似度:' + str(hist_ratio))
 
     # 類似度が閾値を超えたら
     if hist_ratio < const.EVOLVE_THRESHOLD:

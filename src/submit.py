@@ -63,7 +63,7 @@ def _sol_decode(eval_arg):
 		# 目的関数が一つ
 		if const.FUNCTION_ID_LEN == 1:
 			res['objective'] = 0 if eval_result[0] is None else eval_result[0]
-			res['feasible'] = eval_result[2]
+			res['feasible'] = False if eval_result[0] is None else True
 			res['info'] = eval_result[1]
 		# 目的関数が二つ
 		else:
