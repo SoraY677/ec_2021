@@ -3,7 +3,7 @@ from os import path
 from . import const
 
 optimal_solution_list = []
-max_optimal = 0
+min_optimal = 1
 
 def _add_optimal_solution2list(res_list):
 	'''
@@ -13,10 +13,10 @@ def _add_optimal_solution2list(res_list):
 	- res_list (list): 1世代における評価値のリスト
 	'''
 	global optimal_solution_list
-	global max_optimal
+	global min_optimal
 	for i in range(len(res_list)):
-		max_optimal = res_list[i]['objective'] if(max_optimal < res_list[i]['objective']) else max_optimal
-	optimal_solution_list.append(max_optimal)
+		min_optimal = res_list[i]['objective'] if(min_optimal > res_list[i]['objective']) else min_optimal
+	optimal_solution_list.append(min_optimal)
 
 def _create_optimal_solution_data_file():
 	'''
