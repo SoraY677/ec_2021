@@ -97,7 +97,7 @@ const.ALL_ATTRIBUTE_DICT = {
     'company_size_id': const.COMPANY_SIZE_ID
 }
 
-def get_need_attr(cur_list: list, attr_id):
+def get_need_attr(cur_list: list, attr_id:int):
     '''
     指定の配列(各属性)に対して、制約条件に当てはめて足りていない属性を返す
 
@@ -112,6 +112,7 @@ def get_need_attr(cur_list: list, attr_id):
     '''
     try:
         if type(cur_list) is not list:
+            log.warn('引数のタイプが違う')
             raise TypeError
 
         result = []
@@ -141,11 +142,15 @@ def get_need_attr(cur_list: list, attr_id):
             # 非就業者 > 5〜9人 > 10~99人 > 100~999人 > 1000人以上
             constraint_array = (-1, 5, 10, 100, 1000)
         else:
-            raise Exception
+            log.warn('attr_id wrong')
+            raise Exception(attr_id)
 
         # 渡された配列のサイズがそもそも0
         if len(target_array) == 0:
-            result = [constraint_array[0]]
+            if type(constraint_array[0]) is tuple:
+                result = [constraint_array[0][randint(0,len(constraint_array[0]) - 1)]]
+            else:
+                result = [constraint_array[0]]
 
         # 配列に何かしらの要素が入っている
         else:
@@ -184,7 +189,8 @@ def get_need_attr(cur_list: list, attr_id):
                 result.append(no_contain_array[i])
 
     except Exception as e:
-        log.error('attr_id wrong')
+        log.error(e)
+        
 
     return result
 
