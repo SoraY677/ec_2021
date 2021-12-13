@@ -53,7 +53,6 @@ def challenge_evolve_prudent(sol, feasible):
         for key in shuffle_list:
             if len(new_sol[key]) > 0 :
                 new_sol[key].pop(randint(0, len(new_sol[key])-1))
-            new_sol[key] = common.get_complete_attr(new_sol[key], key) # 解が不完全の可能性があるため
 
         # 金額の変化
         # 変更対象となった種別数に応じて金額の変更確率を変化させる
@@ -72,12 +71,15 @@ def challenge_evolve_prudent(sol, feasible):
 
             # 残り50%で要素削減
             else:
-                if(len(new_sol) > 0):
+                if(len(new_sol[target_key]) > 0):
                     new_sol[target_key].pop(randint(0, len(new_sol[target_key])-1))
-                new_sol[target_key] = common.get_complete_attr(new_sol[target_key], target_key) # 不足する要素をなしにする
 
         # 金額の変化
         new_sol[const.PAYMENT_KEY] /= random() * 2 + 0.000001
+
+    # 足りない要素を補完
+    for key in const.ATTRIBUTE_KEY_LIST:
+        new_sol[key] = common.get_complete_attr(new_sol[key], key) 
 
     new_sol[const.PAYMENT_KEY] = round(new_sol[const.PAYMENT_KEY], 5) # 少数を適当なところで切る
 
