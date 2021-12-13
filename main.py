@@ -27,6 +27,7 @@ if __name__ == "__main__":
 		process.evolove()
 
 		log.info('第'+ str(i+1) +'進化:'  + str(time() - start_time))
+		print('第'+ str(i+1) +'進化を完了')
 
 	# タイマー計測終了
 	end_time = time()
