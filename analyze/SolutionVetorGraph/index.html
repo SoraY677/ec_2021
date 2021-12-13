@@ -1,0 +1,53 @@
+<canvas id="myChart" width="400" height="400"></canvas>
+<style>
+	canvas{
+		max-height:100%;
+	}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+const ctx = document.getElementById('myChart').getContext('2d');
+const solData = fetch('../data.json')
+	.then(res => res.json())
+	.then(decodeResonse =>
+	{
+		const responseJson = decodeResonse['all_solution_list']
+		const labels = [...Array(responseJson.length)].map((_, i) => i + 1)
+		let datalist = []
+		for(let j = 0; j < responseJson[0]['eval_list'].length; j++) datalist.push([])
+		let datasets = []
+		for(let i = 0; i < responseJson.length; i++){
+			for(let j = 0; j < responseJson[0]['eval_list'].length; j++){
+				datalist[j].push(responseJson[i]['eval_list'][j]['objective'])
+			}
+		}
+
+		for(let i = 0; i < responseJson[0]['eval_list'].length; i++){
+			// 各評価値に対して
+			const color = (i % 2 == 0 ) ?  'rgb(255, 99, 132)' : 'rgb(54, 162, 235)';
+			datasets.push({
+				label: 'Optimize Soltution',
+				backgroundColor: color,
+				borderColor: color,
+				data: datalist[i],
+			})
+		}
+
+		const data = {
+			labels: labels,
+			datasets: datasets
+		};
+
+		const config = {
+			type: 'line',
+			data: data,
+			options: {}
+		};
+
+		const myChart = new Chart(
+			document.getElementById('myChart'),
+			config
+		); 
+	})
+
+</script>
