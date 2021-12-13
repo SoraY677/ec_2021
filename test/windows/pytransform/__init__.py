@@ -200,7 +200,7 @@ def get_license_info():
     if rcode.startswith('*VERSION:'):
         index = rcode.find('\n')
         info['ISSUER'] = rcode[9:index].split('.')[0].replace('-sn-1.txt', '')
-        rcode = rcode[index + 1:]
+        rcode = rcode[index+1:]
 
     index = 0
     if rcode.startswith('*TIME:'):
@@ -225,7 +225,7 @@ def get_license_info():
     info['CODE'] = rcode[start:]
     i = info['CODE'].find(';')
     if i > 0:
-        info['DATA'] = info['CODE'][i + 1:]
+        info['DATA'] = info['CODE'][i+1:]
         info['CODE'] = info['CODE'][:i]
     return info
 
@@ -450,8 +450,6 @@ def generate_module_key(pubname, key):
 #
 # Compatible for PyArmor v3.0
 #
-
-
 @dllmethod
 def old_init_runtime(systrace=0, sysprofile=1, threadtrace=0, threadprofile=1):
     '''Only for old version, before PyArmor 3'''
