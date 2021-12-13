@@ -31,7 +31,7 @@ else:
 #  -> ex) 
 #    [INFO]     log.py      [def]info       line.10     'test info':
 #    sample massage show!
-formatter = Formatter('[%(levelname)s]\t\t\n%(message)s')
+formatter = Formatter('[%(levelname)s]\t%(message)s')
 
 handler.setLevel(const.LOG_LEVEL)
 handler.setFormatter(formatter)
