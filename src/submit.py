@@ -3,8 +3,6 @@
 '''
 import subprocess
 
-from copy import copy
-
 from .util import const
 from .util import log
 
@@ -62,7 +60,7 @@ def _sol_decode(eval_arg):
 		eval_result = eval(eval_arg)
 		# 目的関数が一つ
 		if const.FUNCTION_ID_LEN == 1:
-			res['objective'] = 0 if eval_result[0] is None else eval_result[0]
+			res['objective'] = 1 if eval_result[0] is None else eval_result[0]
 			res['feasible'] = False if eval_result[0] is None else True
 			res['info'] = eval_result[1]
 		# 目的関数が二つ
