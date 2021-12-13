@@ -59,16 +59,15 @@ def evolve():
 			eval_poplation[j * 2]['objective'],
 			sol_poplation[i * 2 + 1],
 			eval_poplation[i * 2 + 1]['objective']) :
+				log.info('chase-happen! :' + str(j * 2) + '->' + str(i * 2 + 1))
 				sol_poplation[i * 2] = sol_poplation[j * 2 + 1]
 				is_tracking[j * 2] = True
 
 	# 解を変化する
 	for i in range(len(sol_poplation)):
-		if is_tracking[i] is False:
 			if i % 2 == 0:
 				sol_poplation[i] = evolution.challenge_evolve_prudent(sol_poplation[i],eval_poplation[i]['feasible'])
 			else:
 				sol_poplation[i] = evolution.challenge_evolve_agressive(sol_poplation[i])
-	log.info('evolve after:' + str(sol_poplation))
 	
 

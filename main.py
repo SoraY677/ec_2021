@@ -19,6 +19,7 @@ if __name__ == "__main__":
 	loop_num = const.SEARCH_MAX / const.POPLATION_MAX
 
 	log.info('処理の生成終了時の処理時間:'  + str(time() - start_time))
+	log.info('[=====================================================]')
 
 	for i in range(int(loop_num)):
 		# 解の評価
@@ -27,6 +28,7 @@ if __name__ == "__main__":
 		process.evolove()
 
 		log.info('第'+ str(i+1) +'進化:'  + str(time() - start_time))
+		log.info('[=====================================================]')
 		print('第'+ str(i+1) +'進化を完了')
 
 	# タイマー計測終了

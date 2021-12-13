@@ -80,8 +80,7 @@ def challenge_evolve_prudent(sol, feasible):
         new_sol[const.PAYMENT_KEY] /= random() * 2 + 0.000001
 
     new_sol[const.PAYMENT_KEY] = round(new_sol[const.PAYMENT_KEY], 5) # 少数を適当なところで切る
-
-    log.info('new_sol:' + str(new_sol))
+    
     return new_sol
 
 def challenge_evolve_agressive(sol):

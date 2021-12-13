@@ -30,6 +30,7 @@ def _sol_encode(sol):
 
 	# クエリーを生成
 	query = " and ".join(["{0} == {1}".format(str(key),str(sol[key]).replace(' ','')) for key in const.ATTRIBUTE_KEY_LIST])
+	log.info('sol:' + str(query))
 
 	
 	if const.IS_TEST:
@@ -99,7 +100,6 @@ def regist(sol = None):
 	# コマンドを作成
 	command = const.BASE_COMMAND.copy() 
 	command.extend(_sol_encode(sol))
-	log.info('create command:' + str(command))
 	# コマンドリストに追加
 	_command_list.append(command)
 	
