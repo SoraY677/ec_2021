@@ -149,9 +149,10 @@ def tracking_evolve(prudent_sol, prudent_eval, aggresive_sol,aggresive_eval):
         hist_ratio *= hist_2array(prudent_sol[key], aggresive_sol[key]) 
     log.debug('類似度:' + str(hist_ratio))
 
-    # 類似度が閾値を超えたら
+    # 類似度が閾値を超え
     if hist_ratio < const.EVOLVE_THRESHOLD:
-        if prudent_eval < aggresive_eval:
+        # 評価値が良ければ
+        if prudent_eval > aggresive_eval:
             return True
 
     return False
