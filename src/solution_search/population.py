@@ -37,9 +37,9 @@ def evaluate(ex_eval_func):
 	Args:
 	- ex_eval_func (def): 評価関数
 	'''
-	global eval_poplation
+	global sol_poplation, eval_poplation
 	eval_poplation = ex_eval_func(sol_poplation)
-	graph.update_create_optimal_solution_data_file(eval_poplation)
+	graph.update_create_optimal_solution_data_file(sol_poplation, eval_poplation)
 
 def evolve():
 	'''
