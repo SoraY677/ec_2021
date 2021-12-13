@@ -53,7 +53,7 @@ def challenge_evolve_prudent(sol, feasible):
         for key in shuffle_list:
             if len(new_sol[key]) > 0 :
                 new_sol[key].pop(randint(0, len(new_sol[key])-1))
-                new_sol[key] = common.get_complete_attr(new_sol[key], key) # 解が不完全の可能性があるため
+            new_sol[key] = common.get_complete_attr(new_sol[key], key) # 解が不完全の可能性があるため
 
         # 金額の変化
         # 変更対象となった種別数に応じて金額の変更確率を変化させる
@@ -74,13 +74,13 @@ def challenge_evolve_prudent(sol, feasible):
             else:
                 if(len(new_sol) > 0):
                     new_sol[target_key].pop(randint(0, len(new_sol[target_key])-1))
-                    new_sol[target_key] = common.get_complete_attr(new_sol[target_key], target_key) # 不足する要素をなしにする
+                new_sol[target_key] = common.get_complete_attr(new_sol[target_key], target_key) # 不足する要素をなしにする
 
         # 金額の変化
         new_sol[const.PAYMENT_KEY] /= random() * 2 + 0.000001
 
     new_sol[const.PAYMENT_KEY] = round(new_sol[const.PAYMENT_KEY], 5) # 少数を適当なところで切る
-    
+
     return new_sol
 
 def challenge_evolve_agressive(sol):
@@ -115,9 +115,9 @@ def challenge_evolve_agressive(sol):
                 if len(sol[target_key]) > 0 :
                     new_sol[target_key].pop(randint(0, len(sol[target_key])-1))
 
-        # 不足分を補う
-        for key in const.ATTRIBUTE_KEY_LIST:
-            new_sol[key] = common.get_complete_attr(new_sol[key], key) 
+    # 不足分を補う
+    for key in const.ATTRIBUTE_KEY_LIST:
+        new_sol[key] = common.get_complete_attr(new_sol[key], key) 
     
         # 金額を変更
         new_sol[const.PAYMENT_KEY] /= random() + 0.5
@@ -149,7 +149,7 @@ def tracking_evolve(prudent_sol, prudent_eval, aggresive_sol,aggresive_eval):
     log.debug('類似度:' + str(hist_ratio))
 
     # 類似度が閾値を超え
-    if hist_ratio < const.EVOLVE_THRESHOLD:
+    if hist_ratio > const.EVOLVE_THRESHOLD:
         # 評価値が良ければ
         if prudent_eval > aggresive_eval:
             return True
@@ -165,7 +165,7 @@ def hist_2num(number_a, number_b):
         number_b (int): 比較先数値
     '''
 
-    return (const.HIST_BASE_PRICE - abs(number_a - number_b)) / const.HIST_BASE_PRICE 
+    return abs((const.HIST_BASE_PRICE - abs(number_a - number_b)) / const.HIST_BASE_PRICE)
 
 def hist_2array(list_a, list_b):
     '''
