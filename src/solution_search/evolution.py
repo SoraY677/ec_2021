@@ -75,7 +75,8 @@ def challenge_evolve_prudent(sol, feasible):
                     new_sol[target_key].pop(randint(0, len(new_sol[target_key])-1))
 
         # 金額の変化
-        new_sol[const.PAYMENT_KEY] /= random() * 2 + 0.000001
+        new_sol[const.PAYMENT_KEY] /= random() + 0.5
+        if new_sol[const.PAYMENT_KEY] > const.HIST_BASE_PRICE: new_sol[const.PAYMENT_KEY] /= randint(2,5) 
 
     # 足りない要素を補完
     for key in const.ATTRIBUTE_KEY_LIST:
@@ -122,7 +123,8 @@ def challenge_evolve_agressive(sol):
         new_sol[key] = common.get_complete_attr(new_sol[key], key) 
     
     # 金額を変更
-    new_sol[const.PAYMENT_KEY] /= random() + 0.5
+    new_sol[const.PAYMENT_KEY] /= random() * 2 + 0.000001
+    if new_sol[const.PAYMENT_KEY] > const.HIST_BASE_PRICE: new_sol[const.PAYMENT_KEY] /= randint(2,5) 
     new_sol[const.PAYMENT_KEY] = round(new_sol[const.PAYMENT_KEY], 5)
 
     return new_sol
