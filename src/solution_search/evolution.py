@@ -121,9 +121,9 @@ def challenge_evolve_agressive(sol):
     for key in const.ATTRIBUTE_KEY_LIST:
         new_sol[key] = common.get_complete_attr(new_sol[key], key) 
     
-        # 金額を変更
-        new_sol[const.PAYMENT_KEY] /= random() + 0.5
-        new_sol[const.PAYMENT_KEY] = round(new_sol[const.PAYMENT_KEY], 5)
+    # 金額を変更
+    new_sol[const.PAYMENT_KEY] /= random() + 0.5
+    new_sol[const.PAYMENT_KEY] = round(new_sol[const.PAYMENT_KEY], 5)
 
     return new_sol
 
