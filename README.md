@@ -35,7 +35,7 @@ const.CITY_ID_LIST = ["naha","hakodate"]
 
 # 解提出時の各パラメータ
 const.FUNCTION_ID = const.FUNCTION_ID_LIST[0] # **変更可能**
-const.CITY_ID = const.FUNCTION_ID_LIST[0] # **変更可能**
+const.CITY_ID = const.CITY_ID_LIST[0] # **変更可能**
 const.SEEDS_ID = "[123,42,256]"
 
 # 最適解の探索を分析する用のファイル
