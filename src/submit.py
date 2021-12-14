@@ -30,7 +30,7 @@ def _sol_encode(sol):
 
 	# クエリーを生成
 	query = " and ".join(["{0} == {1}".format(str(key),str(sol[key]).replace(' ','')) for key in const.ATTRIBUTE_KEY_LIST])
-	log.info('sol:' + str(query))
+	log.info('sol:' + '[payment] ' + str(sol[const.PAYMENT_KEY]) + ' / [query] ' + str(query))
 
 	
 	if const.IS_TEST:
