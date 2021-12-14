@@ -5,6 +5,7 @@
 '''
 
 from random import randint
+from types import AsyncGeneratorType
 
 from . import creater
 from . import evolution
@@ -45,23 +46,27 @@ def evolve():
 	'''
 	解を進化させる
 	'''
-	is_tracking = [False for _ in range(const.POPLATION_MAX)]
+	is_tracking = [False for _ in range(const.POPLATION_MAX)] # 既に1進化内で追従されていた場合のフラグ
+	aggresive_pop = [{'pop':sol_poplation[i*2+1],'eval':eval_poplation[i*2+1]} for i in range(int(const.POPLATION_MAX/ 2))]
 
+	# 評価値をもとにしたバブルソート
+	for i in range(len(aggresive_pop)):
+		for j in range(i+1, len(aggresive_pop)):
+			if aggresive_pop[i]['eval']['objective'] > aggresive_pop[j]['eval']['objective']:
+				aggresive_pop[i], aggresive_pop[j] = \
+					aggresive_pop[j].copy(), aggresive_pop[i].copy()
 
-	# 積極派解の評価 > 慎重派解の評価 であり
-	# 積極派の解と慎重派の解の差がかなり開いていた場合は
+	# 積極派解の評価 > 慎重派解の評価 ならば
 	# 解を合わせる
-	for i in range(int(len(sol_poplation) / 2)):
-		for j in range(int(len(sol_poplation) / 2)):
-			if not is_tracking[j * 2] and \
-			evolution.tracking_evolve(
-			sol_poplation[j * 2], 
-			eval_poplation[j * 2]['objective'],
-			sol_poplation[i * 2 + 1],
-			eval_poplation[i * 2 + 1]['objective']) :
-				log.info('chase-happen! :' + str(j * 2) + '->' + str(i * 2 + 1))
-				sol_poplation[i * 2] = sol_poplation[j * 2 + 1]
-				is_tracking[j * 2] = True
+	for i in range(int(len(aggresive_pop))):
+		target_index = randint(0, int(const.POPLATION_MAX/2) - 1)
+		# まだ追従済みではなく
+		if is_tracking[target_index*2] is False:
+			# 評価値的に交換する価値があれば
+			if aggresive_pop[i]['eval']['objective'] < eval_poplation[target_index*2]['objective'] :
+				sol_poplation[target_index*2] = aggresive_pop[i]['pop'].copy()
+				is_tracking[target_index*2] = True
+
 
 	# 解を変化する
 	for i in range(len(sol_poplation)):
