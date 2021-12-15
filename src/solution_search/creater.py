@@ -18,7 +18,7 @@ def create_init_sol():
     result = {}
 
     # 給付金額を決定
-    result[const.PAYMENT_KEY] = randint(1, 10) # FIXME: 値段の決め方
+    result[const.PAYMENT_KEY] = randint(2, 15) # FIXME: 値段の決め方
 
     # オプション
     result[const.FUNCTION_ID_KEY] = const.FUNCTION_ID
