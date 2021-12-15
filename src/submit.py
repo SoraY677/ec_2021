@@ -66,10 +66,10 @@ def _sol_decode(eval_arg):
 			res['info'] = eval_result[1]
 		# 目的関数が二つ
 		else:
-			res['objective'] = [eval_result[0], eval_result[2]]
-			res['objective'][0] = 0 if res['objective'][0] is None else res['objective'][0]
-			res['objective'][1] = 0 if res['objective'][1] is None else res['objective'][1]
-			res['feasible'] = eval_result[4]
+			
+			res['objective'] = 1 if eval_result[0] is None or eval_result[2] is None else eval_result[0] * eval_result[2]
+			res['feasible'] = False if eval_result[0] is None or eval_result[2] is None else True
+			res['objective-list'] = [eval_result[0], eval_result[2]]
 			res['info'] = [eval_result[1], eval_result[3]]
 
 	else: # TODO: 本番環境に投げた際の物だが、おそらくうまくいかないので、後で直すこと

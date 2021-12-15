@@ -98,25 +98,21 @@ def challenge_evolve_agressive(sol):
     - dict: 新規解情報
     '''
     
-    # 完全ランダム再生成
-    if random() > 0.8:
-        new_sol = creater.create_init_sol()
 
-    else:
-        new_sol = copy(sol)
+    new_sol = copy(sol)
 
-        change_attr_max = randint(10,15) # 変更する回数
-        for _ in range(change_attr_max):
-            target_key = const.ATTRIBUTE_KEY_LIST[randint(0, len(const.ATTRIBUTE_KEY_LIST) - 1)]
+    change_attr_max = randint(10,15) # 変更する回数
+    for _ in range(change_attr_max):
+        target_key = const.ATTRIBUTE_KEY_LIST[randint(0, len(const.ATTRIBUTE_KEY_LIST) - 1)]
 
-            # 50%で要素を追加
-            if randint(0, 100) > 50:
-                new_sol[target_key] = append_one_attr_noinclude(new_sol[target_key], target_key)
+        # 50%で要素を追加
+        if randint(0, 100) > 50:
+            new_sol[target_key] = append_one_attr_noinclude(new_sol[target_key], target_key)
 
-            # 残り50%で要素削減
-            else:
-                if len(sol[target_key]) > 0 :
-                    new_sol[target_key].pop(randint(0, len(sol[target_key])-1))
+        # 残り50%で要素削減
+        else:
+            if len(sol[target_key]) > 0 :
+                new_sol[target_key].pop(randint(0, len(sol[target_key])-1))
 
     # 不足分を補う
     for key in const.ATTRIBUTE_KEY_LIST:

@@ -4,8 +4,8 @@
 - 解探索中の各処理をまとめる
 '''
 
-from random import randint
-from types import AsyncGeneratorType
+from random import random, randint
+from copy import copy
 
 from . import creater
 from . import evolution
@@ -70,9 +70,13 @@ def evolve():
 
 	# 解を変化する
 	for i in range(len(sol_poplation)):
-			if i % 2 == 0:
-				sol_poplation[i] = evolution.challenge_evolve_prudent(sol_poplation[i],eval_poplation[i]['feasible'])
+			# 突然変異
+			if random() > const.MULATION_THRESHOLD:
+				sol_poplation[i] = copy(creater.create_init_sol())
 			else:
-				sol_poplation[i] = evolution.challenge_evolve_agressive(sol_poplation[i])
+				if i % 2 == 0:
+					sol_poplation[i] = evolution.challenge_evolve_prudent(sol_poplation[i],eval_poplation[i]['feasible'])
+				else:
+					sol_poplation[i] = evolution.challenge_evolve_agressive(sol_poplation[i])
 	
 
