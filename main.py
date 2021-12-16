@@ -22,6 +22,7 @@ if __name__ == "__main__":
 	log.info('[=====================================================]')
 
 	for i in range(int(loop_num)):
+		
 		# 解の評価
 		process.evaluate()
 		# 進化

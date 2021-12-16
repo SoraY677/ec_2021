@@ -28,6 +28,8 @@ def create():
 		sol_poplation.append(sol_item)
 
 		log.debug('create-solution:' + str(sol_item))
+	
+	
 
 	log.debug('======================')
 
@@ -47,7 +49,7 @@ def evolve():
 	解を進化させる
 	'''
 	is_tracking = [False for _ in range(const.POPLATION_MAX)] # 既に1進化内で追従されていた場合のフラグ
-	aggresive_pop = [{'pop':sol_poplation[i*2+1],'eval':eval_poplation[i*2+1]} for i in range(int(const.POPLATION_MAX/ 2))]
+	aggresive_pop = [{'pop':sol_poplation[i*2+1],'eval':eval_poplation[i*2+1],'index':i*2+1} for i in range(int(const.POPLATION_MAX/ 2))]
 
 	# 評価値をもとにしたバブルソート
 	for i in range(len(aggresive_pop)):
@@ -64,8 +66,11 @@ def evolve():
 		if is_tracking[target_index*2] is False:
 			# 評価値的に交換する価値があれば
 			if aggresive_pop[i]['eval']['objective'] < eval_poplation[target_index*2]['objective'] :
+				# 積極派解と慎重派解を交換
+				sol_poplation[aggresive_pop[i]['index']] = sol_poplation[target_index*2].copy()
 				sol_poplation[target_index*2] = aggresive_pop[i]['pop'].copy()
 				is_tracking[target_index*2] = True
+				log.info('解の交換を実施:'  + str(aggresive_pop[i]['index']) + '<->' + str(target_index*2))
 
 
 	# 解を変化する

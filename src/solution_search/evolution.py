@@ -15,7 +15,7 @@ const.HIST_BASE_PRICE = 20 # FIXME 類似度算出用の規定値
 
 def append_one_attr_noinclude(cur_list, attr_key):
     '''
-    まだ含まれていない要素のリストを取得
+    まだ含まれていない要素のうち+1したリストを取得
 
     Args:
     - cur_list (list) : 現在の要素
@@ -23,12 +23,27 @@ def append_one_attr_noinclude(cur_list, attr_key):
     '''
     append_list = copy(cur_list)
     # 不足分を知らべる
-    diff = list(set(append_list) ^ set(const.ALL_ATTRIBUTE_DICT[attr_key]))
+    diff = common.get_appendable_attr(cur_list, attr_key)
     # あればそこからランダムに一つ加えた配列を返す
     if len(diff) > 0:
         append_list.append(diff[randint(0,len(diff)-1)])
-    # 無ければ元の配列をそのまま返す
-    return cur_list
+
+    return append_list
+
+def pop_one_attr_included(cur_list, attr_key):
+    '''
+    すでに含まれている要素から-1した要素のリストを取得
+
+    Args:
+    - cur_list (list) : 現在の要素
+    - attr_key (str): 属性のキー名
+    '''
+    result = copy(cur_list)
+    diff = common.get_popable_attr(cur_list, attr_key)
+    if len(diff) > 0:
+        result.pop(result.index(diff[randint(0,len(diff)-1)]))
+
+    return result 
 
 def challenge_evolve_prudent(sol, feasible):
     '''
@@ -51,36 +66,29 @@ def challenge_evolve_prudent(sol, feasible):
         shuffle_list = shuffle_list[0:change_attr_max-1]
         # 要素数をランダムに-1
         for key in shuffle_list:
-            if len(new_sol[key]) > 0 :
-                new_sol[key].pop(randint(0, len(new_sol[key])-1))
+            new_sol[key] = pop_one_attr_included(new_sol[key], key)
 
         # 金額の変化
         # 変更対象となった種別数に応じて金額の変更確率を変化させる
-        if randint(0,100) < [80,50,30][3 - change_attr_max]: 
-            new_sol[const.PAYMENT_KEY] /= random() + 1
+        new_sol[const.PAYMENT_KEY] *= random() * 0.2 + 0.8
     
     # 解の評価結果が制約条件を満たしている時
     else :
-        change_attr_max = randint(1,5)
+        change_attr_max = randint(1,8)
         for _ in range(change_attr_max):
             target_key = const.ATTRIBUTE_KEY_LIST[randint(0,len(const.ATTRIBUTE_KEY_LIST) - 1)]
             # 50%で要素増加
-            if randint(0, 100) > 50:
+            if random() > 0.5:
                 # 含まれていない要素があれば追加
                 new_sol[target_key] = append_one_attr_noinclude(new_sol[target_key], target_key)
 
             # 残り50%で要素削減
             else:
-                if(len(new_sol[target_key]) > 0):
-                    new_sol[target_key].pop(randint(0, len(new_sol[target_key])-1))
+                new_sol[target_key] = pop_one_attr_included(new_sol[target_key], target_key)
 
         # 金額の変化
-        new_sol[const.PAYMENT_KEY] /= random() + 0.5
+        new_sol[const.PAYMENT_KEY] *= random() * 0.4 + 0.8
         if new_sol[const.PAYMENT_KEY] > const.HIST_BASE_PRICE: new_sol[const.PAYMENT_KEY] /= randint(2,5) 
-
-    # 足りない要素を補完
-    for key in const.ATTRIBUTE_KEY_LIST:
-        new_sol[key] = common.get_complete_attr(new_sol[key], key) 
 
     new_sol[const.PAYMENT_KEY] = round(new_sol[const.PAYMENT_KEY], 5) # 少数を適当なところで切る
 
@@ -105,7 +113,7 @@ def challenge_evolve_agressive(sol):
     else:
         new_sol = copy(sol)
 
-        change_attr_max = randint(10,15) # 変更する回数
+        change_attr_max = randint(10,20) # 変更する回数
         for _ in range(change_attr_max):
             target_key = const.ATTRIBUTE_KEY_LIST[randint(0, len(const.ATTRIBUTE_KEY_LIST) - 1)]
 
@@ -115,15 +123,14 @@ def challenge_evolve_agressive(sol):
 
             # 残り50%で要素削減
             else:
-                if len(sol[target_key]) > 0 :
-                    new_sol[target_key].pop(randint(0, len(sol[target_key])-1))
+                new_sol[target_key] = pop_one_attr_included(new_sol[target_key], target_key)
 
         # 不足分を補う
         for key in const.ATTRIBUTE_KEY_LIST:
             new_sol[key] = common.get_complete_attr(new_sol[key], key) 
     
         # 金額を変更
-        new_sol[const.PAYMENT_KEY] /= random() * 2 + 0.000001
+        new_sol[const.PAYMENT_KEY] *= random() * 1.5 + 0.5
         if new_sol[const.PAYMENT_KEY] > const.HIST_BASE_PRICE: new_sol[const.PAYMENT_KEY] /= randint(2,5) 
         new_sol[const.PAYMENT_KEY] = round(new_sol[const.PAYMENT_KEY], 5)
 

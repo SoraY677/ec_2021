@@ -97,6 +97,16 @@ const.ALL_ATTRIBUTE_DICT = {
     'company_size_id': const.COMPANY_SIZE_ID
 }
 
+# 制約条件として使用する条件リスト
+const.CONTRAINT_ARRAY_LIST = \
+    (
+        (0, 4, 3),
+        ((0, 1), ),
+        (-1,),
+        (-1, (20, 30), 10),
+        (-1, 5, 10, 100, 1000)
+    )
+
 def get_need_attr(cur_list: list, attr_id:int):
     '''
     指定の配列(各属性)に対して、制約条件に当てはめて足りていない属性を返す
@@ -124,23 +134,8 @@ def get_need_attr(cur_list: list, attr_id:int):
         # 優先度が x > y    となる場合は (x, y)
         # 優先度が x, y > z となる場合は ((x, y), z)
         # という構成
-        constraint_array = ()
-
-        if attr_id == 1:
-            # 単独世帯 > 女親と子供 > 男親と子供 > その他
-            constraint_array = (0, 4, 3)
-        elif attr_id == 2:
-            # 単独世帯(男性)，単独世帯(女性) > その他
-            constraint_array = ((0, 1), )
-        elif attr_id == 3:
-            # 非就業者 > その他
-            constraint_array = (-1,)
-        elif attr_id == 4:
-            # 非就業者 > 短時間労働者，臨時労働者 > 一般労働者
-            constraint_array = (-1, (20, 30), 10)
-        elif attr_id == 5:
-            # 非就業者 > 5〜9人 > 10~99人 > 100~999人 > 1000人以上
-            constraint_array = (-1, 5, 10, 100, 1000)
+        if 1 <= attr_id <= 5:
+            constraint_array = const.CONTRAINT_ARRAY_LIST[attr_id - 1]
         else:
             log.warn('attr_id wrong')
             raise Exception(attr_id)
@@ -208,7 +203,7 @@ def get_complete_attr(cur_list_origin, key):
     complete_list = copy(cur_list_origin)
 
     # 不足している分を現在の配列に追加する処理
-    lack_attr = tuple(get_need_attr(complete_list, const.ATTRIBUTE_KEY_LIST.index(key) + 1))        
+    lack_attr = tuple(get_need_attr(complete_list, const.ATTRIBUTE_KEY_LIST.index(key) + 1))
     for attr in lack_attr:
         if type(attr) is tuple:
             complete_list.append(attr[randint(0,len(attr)-1)])
@@ -218,3 +213,99 @@ def get_complete_attr(cur_list_origin, key):
     complete_list.sort()
 
     return complete_list
+
+def get_popable_attr(cur_list, key):
+    '''
+    現在のリストの属性をもとに削除できる要素を返す  
+    ** 昇順にソートされた、正しい属性のみからなる配列及びキーを想定。エラーハンドリング欠如 **  
+
+    Args:
+    - cur_list (list): 現在の配列
+    - key (str): 対象のキー
+
+    Returns:
+    - list: 削除することのできる属性の配列
+    '''
+    # そもそも何も入っていない場合は削除できる要素はない
+    if len(cur_list) <= 1: return []
+
+    list_copy = copy(cur_list)
+    # 対象とする制約条件のリスト
+    target_constraint_array = const.CONTRAINT_ARRAY_LIST[const.ATTRIBUTE_KEY_LIST.index(key)]
+
+    # 制約条件を順に探索
+    for i in range(len(target_constraint_array)):
+        
+        # 探索途中で全ての要素が削除されてしまった = 一つ前の要素が返せる要素
+        if len(list_copy) == 0: result = list(target_constraint_array[i - 1])
+
+        # 同優先度の制約条件の場合
+        if type(target_constraint_array[i]) is tuple:
+            result = []
+            # 一つずつ制約条件を見ていく
+            for constraint in target_constraint_array[i]:
+                if constraint in list_copy:
+                    result.append(constraint)
+                    list_copy.pop(list_copy.index(constraint))
+            if len(list_copy) == 0: return result
+
+        # 単一の制約条件の場合は存在するか調べて、あれば削除
+        else:
+            if target_constraint_array[i] in list_copy:
+                list_copy.pop(list_copy.index(target_constraint_array[i]))
+
+            if len(list_copy) == 0:
+                if  type(target_constraint_array[i]) is tuple:
+                    return list(target_constraint_array[i])
+                return [target_constraint_array[i]]
+
+    return list(list_copy)
+
+def get_appendable_attr(cur_list, key):
+    '''
+    追加可能な要素を取得
+    ** 昇順にソートされた、正しい属性のみからなる配列及びキーを想定。エラーハンドリング欠如 **   
+
+    Args:
+    - cur_list (list): 現在の配列
+    - key (str): 対象のキー
+
+    Returns:
+    - list: 追加することのできる属性の配列
+    '''
+
+    list_copy = copy(cur_list)
+
+    target_constraint_array = const.CONTRAINT_ARRAY_LIST[const.ATTRIBUTE_KEY_LIST.index(key)]
+    not_in_result_list = [] # 最終候補に入らないリスト
+
+    for constraint in target_constraint_array:
+        # 同優先度が複数ある要素
+        if type(constraint) is tuple:
+            result = []
+            for constraint_item in constraint:
+                # 含まれているならば候補から外す
+                if constraint_item in list_copy:
+                    not_in_result_list.append(constraint_item)
+                    list_copy.pop(list_copy.index(constraint_item))
+                # 含まれていなければそれが必要
+                else:
+                    result.append(constraint_item)
+
+            if len(result) != 0:
+                return result
+
+        # 単一の制約条件
+        else:
+            # 含まれていた場合には要素削除
+            if constraint in list_copy:
+                not_in_result_list.append(constraint)
+                list_copy.pop(list_copy.index(constraint))
+            # 含まれていなければそれが必要
+            else:
+                return [ constraint ]
+
+    not_in_result_list.extend(cur_list) # 現状のリストに含まれているその他要素に関しても候補から外す
+    
+    return [item for item in const.ALL_ATTRIBUTE_DICT[key] if item not in not_in_result_list]
+    
