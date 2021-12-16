@@ -7,7 +7,7 @@ from src.util import const
 from src.util import log
 
 if __name__ == "__main__":
-
+	
 	# タイマー計測開始
 	start_time = time()
 

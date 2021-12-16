@@ -1,11 +1,13 @@
 '''
 処理のブロックごとに関数で分けたスクリプト
 '''
-
-
-from . import submit 
-from .util import log
+from .util import const
 from .solution_search import population
+
+if const.IS_TEST:
+    from . import submit_test as submit
+else:
+    from . import submit_product as submit
 
 def create():
     '''

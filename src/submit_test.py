@@ -33,14 +33,7 @@ def _sol_encode(sol):
 	log.info('sol:' + '[payment] ' + str(sol[const.PAYMENT_KEY]) + ' / [query] ' + str(query))
 
 	
-	if const.IS_TEST:
-		res = [str(query), str(sol[const.PAYMENT_KEY]), str(sol[const.FUNCTION_ID_KEY]), str(sol[const.CITY_KEY]), str(sol[const.SEEDS_KEY])] 
-
-	else:
-		res = {}
-		res['query'] = str(query)
-		res['payment'] = sol[const.PAYMENT_KEY]
-
+	res = [str(query), str(sol[const.PAYMENT_KEY]), str(sol[const.FUNCTION_ID_KEY]), str(sol[const.CITY_KEY]), str(sol[const.SEEDS_KEY])] 
 
 	return res 
 
@@ -57,43 +50,29 @@ def _sol_decode(eval_arg):
 	res = {}
 
 
-	if const.IS_TEST:
-		eval_result = eval(eval_arg)
-		# 目的関数が一つ
-		if const.FUNCTION_ID_LEN == 1:
-			res['objective'] = 1 if eval_result[0] is None else eval_result[0]
-			res['feasible'] = False if eval_result[0] is None else True
-			res['info'] = eval_result[1]
-		# 目的関数が二つ
-		else:
-			
-			res['objective'] = 1 if eval_result[0] is None or eval_result[2] is None else eval_result[0] * eval_result[2]
-			res['feasible'] = False if eval_result[0] is None or eval_result[2] is None else True
-			res['objective-list'] = [eval_result[0], eval_result[2]]
-			res['info'] = [eval_result[1], eval_result[3]]
-
-	else: # TODO: 本番環境に投げた際の物だが、おそらくうまくいかないので、後で直すこと
-		res['objective'] = eval_arg['objective']
-
-		# マイナスの値があったら実行不可能解
-		isFeasible = True
-		for con in eval_arg['constraint']:
-			if con < 0:
-				isFeasible = False
-			
-		res['feasible'] = isFeasible
-		res['info'] = eval_arg['info']
+	eval_result = eval(eval_arg)
+	# 目的関数が一つ
+	if const.FUNCTION_ID_LEN == 1:
+		res['objective'] = 1 if eval_result[0] is None else eval_result[0]
+		res['feasible'] = False if eval_result[0] is None else True
+		res['info'] = eval_result[1]
+	# 目的関数が二つ
+	else:
+		
+		res['objective'] = 1 if eval_result[0] is None or eval_result[2] is None else eval_result[0] * eval_result[2]
+		res['feasible'] = False if eval_result[0] is None or eval_result[2] is None else True
+		res['objective-list'] = [eval_result[0], eval_result[2]]
+		res['info'] = [eval_result[1], eval_result[3]]
 
 	log.info('response result:' + str(res))
 	return res
 
-def regist(sol = None):
+def regist(sol):
 	'''
 	解提出用にコマンド登録を行う
 
 	Args:
 	- sol (dist): 解となる辞書
-	- base_command(list): # 基本となるコマンド部分(argを除く)
 	'''
 	global _command_list
 
