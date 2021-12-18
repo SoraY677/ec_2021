@@ -5,4 +5,4 @@ __pycache__
 *sample*
 *build.log*
 
-analyze/**/*data*
+analyze/**/*data.json
