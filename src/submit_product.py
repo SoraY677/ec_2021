@@ -1,6 +1,7 @@
 
 import json
 from subprocess import check_output
+import subprocess
 
 from .util import const
 from .util import log
@@ -16,8 +17,8 @@ def _init():
 
 def _sol_encode(sol):
 	res = {}
-	res['query'] = " and ".join(["{0} == {1}".format(str(key),str(sol[key]).replace(' ','')) for key in const.ATTRIBUTE_KEY_LIST])
-	res['payment'] = sol[const.PAYMENT_KEY]
+	res["query"] = " and ".join(["{0} == {1}".format(str(key),str(sol[key]).replace(' ','')) for key in const.ATTRIBUTE_KEY_LIST])
+	res["payment"] = sol[const.PAYMENT_KEY]
 	log.info('sol:' + '[payment] ' + str(res['payment']) + ' / [query] ' + str(res['query'] ))
 	return res
 
@@ -56,19 +57,23 @@ def regist(sol):
 def run():
 	global  _input_list
 	result_list = []
+	subprocess_list = []
 	if bool(len(_input_list)):
 		_input_list = tuple(_input_list)
+		
+		for input in _input_list:
+			command = ['echo',str(input).replace('\'','"'),'|']
+			command.extend(const.BASE_COMMAND)
+			command = ' '.join(command)
+			subprocess_list.append(subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE,  shell=True))
+		
+		for proc in subprocess_list:
+			result = proc.communicate()[0]
+			log.debug(result)
+			result_list.append(_sol_decode(result))
 
-		# 全てを実行
-		for i in range(len(_input_list)):
-			input = json.dumps(_input_list[i])  # Convert an object into a JSON string
-			result = check_output(  # Submit a solution and recieve the result
-				const.BASE_COMMAND,
-				input=input,  # Pass the solution via stdin
-				text=True,  # Read stdout in text mode
-			)
-			result_list.append(_sol_decode(result))  # Convert a JSON string into an dict
-			
+		for proc in subprocess_list:
+			proc.terminate()
 	_init()
 	
 	return result_list
